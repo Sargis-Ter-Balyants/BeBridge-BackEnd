@@ -1,0 +1,26 @@
+{
+  "name": "startup-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lyowww/BackEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lyowww/BackEnd/issues"
+  },
+  "homepage": "https://github.com/Lyowww/BackEnd#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0",
+    "cors": "^2.8.5"
+  }
+}
