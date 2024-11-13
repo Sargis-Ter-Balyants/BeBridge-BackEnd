@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { MailService } from '../mail/mail.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../user/entities/user.entity';
 
 @Module({
@@ -20,13 +20,15 @@ import { User, UserSchema } from '../user/entities/user.entity';
         global: true,
         secret: config.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: config.get<string | number>('JWT_EXPIRES', '60s')
+          expiresIn: config.get<string | number>('JWT_EXPIRES', '1d')
         }
       })
     })
   ],
   controllers: [ AuthController ],
-  providers: [ AuthService, MailService ],
-  exports: [ AuthService ]
+  providers: [
+    AuthService,
+    MailService
+  ],
 })
 export class AuthModule {}

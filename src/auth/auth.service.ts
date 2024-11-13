@@ -33,7 +33,10 @@ export class AuthService {
 
     await this.mailService.sendUserConfirmation(user);
 
-    const accessToken = this.jwtService.sign({ id: user.id });
+    const accessToken = this.jwtService.sign({
+      id: user.id,
+      roles: user.roles
+    });
 
     return { accessToken }
   }
@@ -48,7 +51,10 @@ export class AuthService {
     const isCorrectPassword = await bcrypt.compare(signin.password, user.password);
     if (!isCorrectPassword) throw new UnauthorizedException('Invalid email or password');
 
-    const accessToken = this.jwtService.sign({ id: user.id });
+    const accessToken = this.jwtService.sign({
+      id: user.id,
+      roles: user.roles
+    });
 
     return { accessToken }
   }

@@ -15,7 +15,10 @@ import { AppModule } from './app.module';
     origin: CLIENT_URL
   });
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true
+  }));
 
   await app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
