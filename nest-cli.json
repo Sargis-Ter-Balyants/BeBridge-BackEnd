@@ -7,7 +7,7 @@
     "assets": [
       {
         "include": "**/*.pug",
-        "outDir": "./dist/mail/templates",
+        "outDir": "dist",
         "watchAssets": true
       }
     ]
