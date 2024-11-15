@@ -20,7 +20,7 @@ export class JobCategoryService {
   }
 
   async getOne(id: Types.ObjectId) {
-    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
     const jobCategory = await this.jobCategoryModel.findById(id);
     if (!jobCategory) throw new NotFoundException(`Job category not found`);
@@ -33,7 +33,7 @@ export class JobCategoryService {
   }
 
   async update(id: Types.ObjectId, jobCategory: JobCategoryDto) {
-    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
     const updatedJobCategory = await this.jobCategoryModel.findByIdAndUpdate(
       id,
@@ -46,7 +46,7 @@ export class JobCategoryService {
   }
 
   async delete(id: Types.ObjectId) {
-    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
     const jobCategory = await this.jobCategoryModel.findByIdAndDelete({ _id: id });
     if (!jobCategory) throw new NotFoundException(`Job category not found`);
