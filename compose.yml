@@ -1,0 +1,16 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    container_name: TJobsDB
+    ports:
+      - "27017:${DB_PORT}"
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

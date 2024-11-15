@@ -18,6 +18,11 @@ export class AuthService {
     private readonly mailService: MailService
   ) {}
 
+  async validateOAuthLogin(user: any): Promise<string> {
+    const payload = { email: user.email, sub: user.id };
+    return this.jwtService.sign(payload);
+  }
+
   async signup(signup: SignupDto) {
     const uniqueEmail = await this.userModel.findOne({ email: signup.email });
     if (uniqueEmail) throw new BadRequestException('User with this email already exists');
