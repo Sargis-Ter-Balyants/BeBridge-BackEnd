@@ -13,6 +13,8 @@ export class UserService {
   ) {}
 
   async get(id: Types.ObjectId) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException('User not found');
+
     const user = await this.userModel.findOne({ _id: id }, '-password');
     if (!user) throw new BadRequestException('User not found');
 
@@ -20,6 +22,8 @@ export class UserService {
   }
 
   async update(id: Types.ObjectId, profile: ProfileDto) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException('User not found');
+
     if (profile.password && profile.confirmPassword) {
       const salt = await bcrypt.genSalt(10);
       profile.password = await bcrypt.hash(profile.password, salt);
@@ -39,6 +43,8 @@ export class UserService {
   }
 
   async remove(id: Types.ObjectId) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException('User not found');
+
     const user = await this.userModel.findOneAndDelete({
       _id: id
     }, {

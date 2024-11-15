@@ -1,86 +1,56 @@
-import { Model, PaginateModel, Types } from "mongoose";
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import Success from "src/utils/SuccessResponse";
-import { JobCategoriesModel } from "./job-category.model";
-import { JobCategoriesDto } from "./dto/job-category.dto";
+import { InjectModel } from '@nestjs/mongoose';
+import { PaginateModel, Types } from 'mongoose';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { JobCategory } from './entities/job-category.entity';
+import { JobCategoryDto } from './dto/job-category.dto';
 
 @Injectable()
-export class JobCategoriesService {
-    constructor(
-        @InjectModel(JobCategoriesModel.name)
-        private readonly jobCategoriesModel: PaginateModel<JobCategoriesModel>
-    ) {}
+export class JobCategoryService {
+  constructor(
+    @InjectModel(JobCategory.name)
+    private readonly jobCategoryModel: PaginateModel<JobCategory>
+  ) {}
 
-    async getMostPopular(limit: number): Promise<SuccessResponse> {
-        const result = await this.jobCategoriesModel.find().sort({ popularity: -1 }).limit(limit).exec();
+  async getMostPopular(limit: number = 6) {
+    return this.jobCategoryModel.find().sort({ popularity: -1 }).limit(limit);
+  }
 
-        return Success(true, result, "Successful");
-    }
+  async getAll(page: number = 1, limit: number = 6) {
+    return this.jobCategoryModel.paginate({}, { page, limit });
+  }
 
-    async getAll(page: number, limit: number): Promise<SuccessResponse> {
-        const options = {
-            page,
-            limit,
-        };
+  async getOne(id: Types.ObjectId) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
 
-        const result = await this.jobCategoriesModel.paginate({}, options);
+    const jobCategory = await this.jobCategoryModel.findById(id);
+    if (!jobCategory) throw new NotFoundException(`Job category not found`);
 
-        return Success(true, result, "Successful");
-    }
+    return jobCategory;
+  }
 
-    async getOne(id: Types.ObjectId): Promise<SuccessResponse> {
-        const result = await this.jobCategoriesModel.findById(id);
+  async create(name: string) {
+    return this.jobCategoryModel.create({ name, popularity: 0, availableJobs: 0 });
+  }
 
-        if (!result) {
-            return Success(false, null, "Job Category not found");
-        }
+  async update(id: Types.ObjectId, jobCategory: JobCategoryDto) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
 
-        return Success(true, result, "Successful");
-    }
+    const updatedJobCategory = await this.jobCategoryModel.findByIdAndUpdate(
+      id,
+      { ...jobCategory },
+      { new: true }
+    );
+    if (!updatedJobCategory) throw new NotFoundException(`Job category not found`);
 
-    async create(body: JobCategoriesDto): Promise<SuccessResponse> {
-        const { name } = body;
+    return updatedJobCategory;
+  }
 
-        const result = await this.jobCategoriesModel.create({
-            name,
-            popularity: 0,
-            availableJobs: 0,
-        });
+  async delete(id: Types.ObjectId) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Job category not found`);
 
-        if (!result) {
-            return Success(false, null, "Something went wrong");
-        }
+    const jobCategory = await this.jobCategoryModel.findByIdAndDelete({ _id: id });
+    if (!jobCategory) throw new NotFoundException(`Job category not found`);
 
-        return Success(true, result, "Successfully created");
-    }
-
-    async update(id: Types.ObjectId, body: JobCategoriesDto): Promise<SuccessResponse> {
-        const result = await this.jobCategoriesModel.findByIdAndUpdate(id, body, { new: true }).exec();
-
-        if (!result) {
-            return Success(false, null, "Job category not found");
-        }
-
-        return Success(true, result, "Successfully updated");
-    }
-
-    async remove(id: Types.ObjectId): Promise<SuccessResponse> {
-        const jobCategory = await this.jobCategoriesModel.findOneAndDelete({ id });
-
-        if (!jobCategory) {
-            return Success(false, null, "Job category not found");
-        }
-
-        return Success(true, null, "Successfully deleted");
-    }
-
-    async delete(id: Types.ObjectId): Promise<SuccessResponse> {
-        try {
-            await this.jobCategoriesModel.findByIdAndDelete(id).exec();
-            return Success(true, "Successfully deleted", null);
-        } catch (err) {
-            return Success(false, err.message, null);
-        }
-    }
+    return jobCategory;
+  }
 }

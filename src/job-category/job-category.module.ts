@@ -1,19 +1,17 @@
-import { Module } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
-import { JobCategoriesModel, JobCategoriesSchema } from "./job-category.model";
-import { JobCategoriesController } from "./job-category.controller";
-import { JobCategoriesService } from "./job-category.service";
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { JobCategory, JobCategorySchema } from './entities/job-category.entity';
+import { JobCategoryController } from './job-category.controller';
+import { JobCategoryService } from './job-category.service';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            {
-                name: JobCategoriesModel.name,
-                schema: JobCategoriesSchema,
-            },
-        ]),
-    ],
-    controllers: [JobCategoriesController],
-    providers: [JobCategoriesService],
+  imports: [
+    MongooseModule.forFeature([ {
+      name: JobCategory.name,
+      schema: JobCategorySchema
+    } ])
+  ],
+  controllers: [ JobCategoryController ],
+  providers: [ JobCategoryService ]
 })
 export class JobCategoriesModule {}

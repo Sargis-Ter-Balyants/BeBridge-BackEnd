@@ -16,7 +16,7 @@ export class AuthController {
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const jwt = await this.authService.validateOAuthLogin(req.user);
+    const jwt = await this.authService.validateOAuthLogin(req['user']);
     res.redirect(`http://localhost:3000?token=${ jwt }`);
   }
 
@@ -27,7 +27,7 @@ export class AuthController {
   @Get('linkedin/redirect')
   @UseGuards(AuthGuard('linkedin'))
   async linkedinAuthRedirect(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const jwt = await this.authService.validateOAuthLogin(req.user);
+    const jwt = await this.authService.validateOAuthLogin(req['user']);
     res.redirect(`http://localhost:3000?token=${ jwt }`);
   }
 
