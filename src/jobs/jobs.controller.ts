@@ -8,17 +8,18 @@ import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
 import { Role } from "src/user/entities/user.entity";
 import { Roles } from "src/auth/role.decorator";
 
+@UseGuards(AuthGuard, RoleGuard)
+@Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
 @Controller("jobs")
 export class JobsController {
     constructor(private readonly jobsService: JobsService) {}
 
+    @UseGuards()
     @Get()
     async getAll(@Query("page") page: string, @Query("limit") limit: string) {
         return this.jobsService.getAll(parseInt(page), parseInt(limit));
     }
 
-    @UseGuards(AuthGuard, RoleGuard)
-    @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
     @Get("search")
     async search(@Query("limit") limit: string) {
         return this.jobsService.search();
