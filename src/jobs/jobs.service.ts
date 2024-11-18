@@ -27,16 +27,18 @@ export class JobsService {
     }
 
     async search(
-        page: number = 1,
-        limit: number = 10,
-        searchTerm: string = "",
+        page: number,
+        limit: number,
+        searchTerm: string,
         categoryId: Types.ObjectId,
-        type: string,
-        level: string,
-        education: string,
-        sortBy: string = "createdAt",
-        sortType: string = "desc"
+        // type: string,
+        // level: string,
+        // education: string,
+        sortBy: string,
+        sortType: string
     ) {
+        console.log(page, limit, searchTerm, categoryId, sortBy, sortType);
+
         const query: any = {};
 
         const sort = { [sortBy]: sortType === "desc" ? -1 : 1 };
@@ -62,7 +64,9 @@ export class JobsService {
         }
 
         if (categoryId) {
-            query.category = categoryId;
+            if (Types.ObjectId.isValid(categoryId)) {
+                query.category = new Types.ObjectId(categoryId);
+            }
         }
 
         // if (type) {
