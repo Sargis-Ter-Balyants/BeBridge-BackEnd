@@ -1,33 +1,43 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { ContactUsModel } from "./entities/contact-us.entity";
-import { PaginateModel } from "mongoose";
+import { PaginateModel, Types } from "mongoose";
 
 @Injectable()
 export class ContactUsService {
     constructor(
         @InjectModel(ContactUsModel.name)
-        private readonly jobModel: PaginateModel<ContactUsModel>
+        private readonly contactUsModel: PaginateModel<ContactUsModel>
     ) {}
 
     create(body: ContactUsDto) {
-        return "This action adds a new contactUs";
+        return this.contactUsModel.create(body);
     }
 
     findAll() {
-        return `This action returns all contactUs`;
+        return this.contactUsModel.find();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} contactUs`;
+    findOne(id: Types.ObjectId) {
+        return this.contactUsModel.findById(id);
     }
 
-    update(id: number, body: ContactUsDto) {
-        return `This action updates a #${id} contactUs`;
+    async update(id: Types.ObjectId, body: ContactUsDto) {
+        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
+
+        const updatedContactUs = await this.contactUsModel.findByIdAndUpdate(id, { ...body }, { new: true });
+        if (!updatedContactUs) throw new NotFoundException(`Contact request not found`);
+
+        return updatedContactUs;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} contactUs`;
+    async delete(id: Types.ObjectId) {
+        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
+
+        const contactRequest = await this.contactUsModel.findByIdAndDelete({ _id: id });
+        if (!contactRequest) throw new NotFoundException(`Contact request not found`);
+
+        return contactRequest;
     }
 }

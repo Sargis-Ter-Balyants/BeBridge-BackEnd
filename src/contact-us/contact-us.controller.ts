@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
 import { ContactUsService } from "./contact-us.service";
 import { ContactUsDto } from "./dto/contact-us.dto";
+import { Types } from "mongoose";
 
 @Controller("contact-us")
 export class ContactUsController {
@@ -12,8 +13,8 @@ export class ContactUsController {
     }
 
     @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.contactUsService.findOne(+id);
+    findOne(@Param("id") id: Types.ObjectId) {
+        return this.contactUsService.findOne(id);
     }
 
     @Post()
@@ -22,12 +23,12 @@ export class ContactUsController {
     }
 
     @Patch(":id")
-    update(@Param("id") id: string, @Body() body: ContactUsDto) {
-        return this.contactUsService.update(+id, body);
+    update(@Param("id") id: Types.ObjectId, @Body() body: ContactUsDto) {
+        return this.contactUsService.update(id, body);
     }
 
     @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.contactUsService.remove(+id);
+    remove(@Param("id") id: Types.ObjectId) {
+        return this.contactUsService.delete(id);
     }
 }
