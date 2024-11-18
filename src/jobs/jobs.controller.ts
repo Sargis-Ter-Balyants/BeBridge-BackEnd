@@ -33,9 +33,15 @@ export class JobsController {
     async search(
         @Query("search_term") searchTerm: string,
         @Query("page", ParsePageAndLimitPipe) page: number,
-        @Query("limit", ParsePageAndLimitPipe) limit: number
+        @Query("limit", ParsePageAndLimitPipe) limit: number,
+        @Query("category", ParseObjectIdPipe) category: Types.ObjectId,
+        @Query("type") type: string,
+        @Query("level") level: string,
+        @Query("education") education: string,
+        @Query("sort_by") sortBy: string,
+        @Query("sort_type") sortType: string
     ) {
-        return this.jobsService.search(page, limit, searchTerm);
+        return this.jobsService.search(page, limit, searchTerm, category, type, level, education, sortBy, sortType);
     }
 
     @Get(":id")

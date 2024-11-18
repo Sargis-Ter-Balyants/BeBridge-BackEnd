@@ -26,12 +26,25 @@ export class JobsService {
         return this.jobModel.paginate({}, { page: 1, limit: 6 });
     }
 
-    async search(page: number = 1, limit: number = 10, searchTerm: string = "") {
+    async search(
+        page: number = 1,
+        limit: number = 10,
+        searchTerm: string = "",
+        category: Types.ObjectId,
+        type: string = "",
+        level: string = "",
+        education: string = "",
+        sortBy: string = "createdAt",
+        sortType: string = "desc"
+    ) {
         const query: any = {};
+
+        const sort = { [sortBy]: sortType === "desc" ? -1 : 1 };
 
         const options = {
             page,
             limit,
+            sort,
             populate: {
                 path: "category",
             },
@@ -48,6 +61,10 @@ export class JobsService {
             };
         }
 
+        if (category) {
+            query.category = category;
+        }
+
         return this.jobModel.paginate(query, options);
     }
 
@@ -61,6 +78,7 @@ export class JobsService {
     }
 
     async create(body: JobSDto) {
+        body.category = new Types.ObjectId(body.category);
         return this.jobModel.create(body);
     }
 
