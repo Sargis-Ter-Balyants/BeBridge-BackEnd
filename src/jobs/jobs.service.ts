@@ -65,7 +65,7 @@ export class JobsService {
 
         if (categoryId) {
             if (Types.ObjectId.isValid(categoryId)) {
-                query.category = new Types.ObjectId(categoryId);
+                query.category = categoryId;
             }
         }
 
