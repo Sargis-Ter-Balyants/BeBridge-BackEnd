@@ -1,30 +1,32 @@
-import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common';
-import { Types } from 'mongoose';
-import { UserService } from './user.service';
-import { ProfileDto } from './dto/profile.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { RoleGuard } from '../auth/role.guard';
-import { Roles } from '../auth/role.decorator';
-import { Role } from './entities/user.entity';
+import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from "@nestjs/common";
+import { Types } from "mongoose";
+import { UserService } from "./user.service";
+import { ProfileDto } from "./dto/profile.dto";
+import { AuthGuard } from "../auth/auth.guard";
+import { RoleGuard } from "../auth/role.guard";
+import { Roles } from "../auth/role.decorator";
+import { Role } from "./entities/user.entity";
+import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
 
-@Controller('user')
+@Controller("user")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard, RoleGuard)
-  @Roles(Role.EMPLOYEE)
-  @Get(':id')
-  findOne(@Param('id') id: Types.ObjectId) {
-    return this.userService.get(id);
-  }
+    @UseGuards(AuthGuard, RoleGuard)
+    @Roles(Role.EMPLOYEE)
+    @Get(":id")
+    findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+        return this.userService.get(id);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: Types.ObjectId, @Body() profile: ProfileDto) {
-    return this.userService.update(id, profile);
-  }
+    @Patch(":id")
+    update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() profile: ProfileDto) {
+        const objectId = new Types.ObjectId(id);
+        return this.userService.update(id, profile);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: Types.ObjectId) {
-    return this.userService.remove(id);
-  }
+    @Delete(":id")
+    remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+        return this.userService.remove(id);
+    }
 }

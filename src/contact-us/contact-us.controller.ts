@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/commo
 import { ContactUsService } from "./contact-us.service";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { Types } from "mongoose";
+import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
 
 @Controller("contact-us")
 export class ContactUsController {
@@ -13,7 +14,7 @@ export class ContactUsController {
     }
 
     @Get(":id")
-    findOne(@Param("id") id: Types.ObjectId) {
+    findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
         return this.contactUsService.findOne(id);
     }
 
@@ -23,12 +24,12 @@ export class ContactUsController {
     }
 
     @Patch(":id")
-    update(@Param("id") id: Types.ObjectId, @Body() body: ContactUsDto) {
+    update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: ContactUsDto) {
         return this.contactUsService.update(id, body);
     }
 
     @Delete(":id")
-    remove(@Param("id") id: Types.ObjectId) {
+    remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
         return this.contactUsService.delete(id);
     }
 }
