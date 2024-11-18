@@ -16,21 +16,18 @@ export class JobsController {
     constructor(private readonly jobsService: JobsService) {}
 
     @Get()
-    async getAll(
-        @Query("page", ParsePageAndLimitPipe) page: number,
-        @Query("limit", ParsePageAndLimitPipe) limit: number
-    ) {
+    getAll(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
         return this.jobsService.getAll(page, limit);
     }
 
     @UseGuards()
     @Get("public")
-    async getAllPublic() {
+    getAllPublic() {
         return this.jobsService.getAllPublic();
     }
 
     @Get("search")
-    async search(
+    search(
         @Query("search_term") searchTerm: string = "",
         @Query("page", ParsePageAndLimitPipe) page: number = 1,
         @Query("limit", ParsePageAndLimitPipe) limit: number = 10,
@@ -46,25 +43,25 @@ export class JobsController {
     }
 
     @Get(":id")
-    async findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
         return this.jobsService.getOne(id);
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Post()
-    async create(@Body() body: JobSDto) {
+    create(@Body() body: JobSDto) {
         return this.jobsService.create(body);
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Patch(":id")
-    async update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: JobSDto) {
+    update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: JobSDto) {
         return this.jobsService.update(id, body);
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Delete(":id")
-    async delete(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    delete(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
         return this.jobsService.delete(id);
     }
 }
