@@ -21,7 +21,6 @@ export class UserController {
 
     @Patch(":id")
     update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() profile: ProfileDto) {
-        const objectId = new Types.ObjectId(id);
         return this.userService.update(id, profile);
     }
 

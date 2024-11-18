@@ -3,6 +3,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { JobsModel, JobsSchema } from "./entities/jobs.entity";
 import { JobsService } from "./jobs.service";
 import { JobsController } from "./jobs.controller";
+import { JwtService } from "@nestjs/jwt";
 
 @Module({
     imports: [
@@ -14,6 +15,6 @@ import { JobsController } from "./jobs.controller";
         ]),
     ],
     controllers: [JobsController],
-    providers: [JobsService],
+    providers: [JwtService, JobsService],
 })
 export class JobsModule {}

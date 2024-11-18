@@ -2,8 +2,11 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { Types } from "mongoose";
 import { JobSDto } from "./dto/jobs.dto";
 import { JobsService } from "./jobs.service";
-import { AuthGuard } from "@nestjs/passport";
+import { AuthGuard } from "src/auth/auth.guard";
+import { RoleGuard } from "src/auth/role.guard";
 import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
+import { Role } from "src/user/entities/user.entity";
+import { Roles } from "src/auth/role.decorator";
 
 @Controller("jobs")
 export class JobsController {
@@ -14,7 +17,8 @@ export class JobsController {
         return this.jobsService.getAll(parseInt(page), parseInt(limit));
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, RoleGuard)
+    @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
     @Get("search")
     async search(@Query("limit") limit: string) {
         return this.jobsService.search();
