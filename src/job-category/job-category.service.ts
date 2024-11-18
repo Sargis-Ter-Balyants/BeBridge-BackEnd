@@ -15,8 +15,15 @@ export class JobCategoryService {
         return this.jobCategoryModel.find().sort({ popularity: -1 }).limit(limit);
     }
 
-    async getAll(page: number = 1, limit: number = 6) {
-        return this.jobCategoryModel.paginate({}, { page, limit });
+    async getAll(page: number = 1, limit: number = 10) {
+        const query = {};
+
+        const options = {
+            page,
+            limit,
+        };
+
+        return this.jobCategoryModel.paginate(query, options);
     }
 
     async getOne(id: Types.ObjectId) {

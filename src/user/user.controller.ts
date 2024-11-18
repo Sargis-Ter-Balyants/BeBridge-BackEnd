@@ -6,7 +6,7 @@ import { AuthGuard } from "../auth/auth.guard";
 import { RoleGuard } from "../auth/role.guard";
 import { Roles } from "../auth/role.decorator";
 import { Role } from "./entities/user.entity";
-import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
+import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
 
 @Controller("user")
 export class UserController {

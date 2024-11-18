@@ -11,12 +11,30 @@ export class JobsService {
         private readonly jobModel: PaginateModel<JobsModel>
     ) {}
 
-    async getAll(page: number = 1, limit: number = 6) {
-        return this.jobModel.paginate({}, { page, limit });
+    async getAll(page: number = 1, limit: number = 10) {
+        const query = {};
+
+        const options = {
+            page,
+            limit,
+        };
+
+        return this.jobModel.paginate(query, options);
     }
 
-    async search() {
-        return this.jobModel.find();
+    async getAllPublic() {
+        return this.jobModel.paginate({}, { page: 1, limit: 6 });
+    }
+
+    async search(page: number = 1, limit: number = 10) {
+        const query = {};
+
+        const options = {
+            page,
+            limit,
+        };
+
+        return this.jobModel.paginate(query, options);
     }
 
     async getOne(id: Types.ObjectId) {

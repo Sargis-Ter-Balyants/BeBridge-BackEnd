@@ -1,16 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from "@nestjs/common";
 import { ContactUsService } from "./contact-us.service";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { Types } from "mongoose";
-import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
+import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
+import { ParsePageAndLimitPipe } from "pipes/pageAndLimit.pipe";
+import { AuthGuard } from "src/auth/auth.guard";
+import { RoleGuard } from "src/auth/role.guard";
+import { Roles } from "src/auth/role.decorator";
+import { Role } from "src/user/entities/user.entity";
 
+@UseGuards(AuthGuard, RoleGuard)
+@Roles(Role.MODERATOR)
 @Controller("contact-us")
 export class ContactUsController {
     constructor(private readonly contactUsService: ContactUsService) {}
 
-    @Get()
-    findAll() {
-        return this.contactUsService.findAll();
+    @Get("search")
+    search(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
+        return this.contactUsService.search(page, limit);
     }
 
     @Get(":id")
@@ -18,6 +25,7 @@ export class ContactUsController {
         return this.contactUsService.findOne(id);
     }
 
+    @UseGuards()
     @Post()
     create(@Body() body: ContactUsDto) {
         return this.contactUsService.create(body);

@@ -2,20 +2,24 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { Types } from "mongoose";
 import { JobCategoryDto } from "./dto/job-category.dto";
 import { JobCategoryService } from "./job-category.service";
-import { ParseObjectIdPipe } from "src/pipes/objectIdPipe.pipe";
+import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
+import { ParsePageAndLimitPipe } from "pipes/pageAndLimit.pipe";
 
 @Controller("job-category")
 export class JobCategoryController {
     constructor(private readonly jobCategoryService: JobCategoryService) {}
 
     @Get()
-    async getAll(@Query("page") page: string, @Query("limit") limit: string) {
-        return this.jobCategoryService.getAll(parseInt(page), parseInt(limit));
+    async getAll(
+        @Query("page", ParsePageAndLimitPipe) page: number,
+        @Query("limit", ParsePageAndLimitPipe) limit: number
+    ) {
+        return this.jobCategoryService.getAll(page, limit);
     }
 
     @Get("popular")
-    async getMostPopular(@Query("limit") limit: string) {
-        return this.jobCategoryService.getMostPopular(parseInt(limit));
+    async getMostPopular(@Query("limit", ParsePageAndLimitPipe) limit: number) {
+        return this.jobCategoryService.getMostPopular(limit);
     }
 
     @Get(":id")

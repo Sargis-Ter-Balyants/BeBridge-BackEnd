@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { ContactUsModel } from "./entities/contact-us.entity";
@@ -11,31 +11,40 @@ export class ContactUsService {
         private readonly contactUsModel: PaginateModel<ContactUsModel>
     ) {}
 
+    search(page: number = 1, limit: number = 10) {
+        const query = {};
+
+        const options = {
+            page,
+            limit,
+        };
+
+        return this.contactUsModel.paginate(query, options);
+    }
+
+    findOne(id: Types.ObjectId) {
+        const contactRequest = this.contactUsModel.findById(id);
+
+        if (!contactRequest) throw new NotFoundException(`Contact request not found`);
+
+        return contactRequest;
+    }
+
     create(body: ContactUsDto) {
         return this.contactUsModel.create(body);
     }
 
-    findAll() {
-        return this.contactUsModel.find();
-    }
+    update(id: Types.ObjectId, body: ContactUsDto) {
+        const updatedContactUs = this.contactUsModel.findByIdAndUpdate(id, { ...body }, { new: true });
 
-    findOne(id: Types.ObjectId) {
-        return this.contactUsModel.findById(id);
-    }
-
-    async update(id: Types.ObjectId, body: ContactUsDto) {
-        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
-
-        const updatedContactUs = await this.contactUsModel.findByIdAndUpdate(id, { ...body }, { new: true });
         if (!updatedContactUs) throw new NotFoundException(`Contact request not found`);
 
         return updatedContactUs;
     }
 
-    async delete(id: Types.ObjectId) {
-        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
+    delete(id: Types.ObjectId) {
+        const contactRequest = this.contactUsModel.findByIdAndDelete({ _id: id });
 
-        const contactRequest = await this.contactUsModel.findByIdAndDelete({ _id: id });
         if (!contactRequest) throw new NotFoundException(`Contact request not found`);
 
         return contactRequest;
