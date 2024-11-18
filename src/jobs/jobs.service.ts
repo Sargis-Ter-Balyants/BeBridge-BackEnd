@@ -30,15 +30,13 @@ export class JobsService {
         page: number,
         limit: number,
         searchTerm: string,
-        categoryId: Types.ObjectId,
+        categoryId: string | null,
         // type: string,
         // level: string,
         // education: string,
         sortBy: string,
         sortType: string
     ) {
-        console.log(page, limit, searchTerm, categoryId, sortBy, sortType);
-
         const query: any = {};
 
         const sort = { [sortBy]: sortType === "desc" ? -1 : 1 };
@@ -64,8 +62,9 @@ export class JobsService {
         }
 
         if (categoryId) {
-            if (Types.ObjectId.isValid(categoryId)) {
-                query.category = categoryId;
+            const castedCategoryId = new Types.ObjectId(categoryId);
+            if (Types.ObjectId.isValid(castedCategoryId)) {
+                query.category = castedCategoryId;
             }
         }
 
@@ -80,6 +79,8 @@ export class JobsService {
         // if (education) {
         //     query.education = education;
         // }
+
+        console.log(query, options);
 
         return this.jobModel.paginate(query, options);
     }

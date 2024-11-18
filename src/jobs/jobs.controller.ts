@@ -28,17 +28,24 @@ export class JobsController {
 
     @Get("search")
     search(
-        @Query("search_term") searchTerm: string = "",
-        @Query("page", ParsePageAndLimitPipe) page: number = 1,
-        @Query("limit", ParsePageAndLimitPipe) limit: number = 10,
-        @Query("category_id", ParseObjectIdPipe) categoryId: Types.ObjectId,
+        @Query("search_term") searchTerm: string,
+        @Query("page", ParsePageAndLimitPipe) page: number,
+        @Query("limit", ParsePageAndLimitPipe) limit: number,
+        @Query("category_id") categoryId: string,
         // @Query("type") type: string,
         // @Query("level") level: string,
         // @Query("education") education: string,
-        @Query("sort_by") sortBy: string = "createdAt",
-        @Query("sort_type") sortType: string = "desc"
+        @Query("sort_by") sortBy: string,
+        @Query("sort_type") sortType: string
     ) {
-        return this.jobsService.search(page, limit, searchTerm, categoryId, sortBy, sortType);
+        return this.jobsService.search(
+            page || 1,
+            limit || 10,
+            searchTerm || "",
+            categoryId || null,
+            sortBy || "createdAt",
+            sortType || "desc"
+        );
         // return this.jobsService.search(page, limit, searchTerm, categoryId, type, level, education, sortBy, sortType);
     }
 
