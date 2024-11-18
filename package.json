@@ -30,6 +30,7 @@
         "cross-env": "^7.0.3",
         "mongoose": "^8.8.1",
         "mongoose-paginate-v2": "^1.8.5",
+        "passport": "^0.7.0",
         "passport-google-oauth20": "^2.0.0",
         "passport-linkedin-oauth2": "^2.0.0",
         "reflect-metadata": "^0.2.0",
