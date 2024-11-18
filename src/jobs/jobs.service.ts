@@ -30,10 +30,10 @@ export class JobsService {
         page: number = 1,
         limit: number = 10,
         searchTerm: string = "",
-        category: Types.ObjectId,
-        type: string = "",
-        level: string = "",
-        education: string = "",
+        categoryId: Types.ObjectId,
+        type: string,
+        level: string,
+        education: string,
         sortBy: string = "createdAt",
         sortType: string = "desc"
     ) {
@@ -50,7 +50,7 @@ export class JobsService {
             },
         };
 
-        if (query.searchTerm.length) {
+        if (searchTerm.length) {
             query.searchTerm = {
                 $or: [
                     { positionName: { $regex: searchTerm, $options: "i" } },
@@ -61,9 +61,21 @@ export class JobsService {
             };
         }
 
-        if (category) {
-            query.category = category;
+        if (categoryId) {
+            query.category = categoryId;
         }
+
+        // if (type) {
+        //     query.type = type;
+        // }
+
+        // if (level) {
+        //     query.level = level;
+        // }
+
+        // if (education) {
+        //     query.education = education;
+        // }
 
         return this.jobModel.paginate(query, options);
     }
