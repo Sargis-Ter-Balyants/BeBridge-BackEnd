@@ -17,6 +17,14 @@ export class JobCategoryController {
         return this.jobCategoryService.getAll(page, limit);
     }
 
+    @Get()
+    async search(
+        @Query("page", ParsePageAndLimitPipe) page: number,
+        @Query("limit", ParsePageAndLimitPipe) limit: number
+    ) {
+        return this.jobCategoryService.search(page, limit);
+    }
+
     @Get("popular")
     async getMostPopular(@Query("limit", ParsePageAndLimitPipe) limit: number) {
         return this.jobCategoryService.getMostPopular(limit);

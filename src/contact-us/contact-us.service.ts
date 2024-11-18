@@ -11,6 +11,18 @@ export class ContactUsService {
         private readonly contactUsModel: PaginateModel<ContactUsModel>
     ) {}
 
+    getAll(page: number = 1, limit: number = 10) {
+        const query = {};
+
+        const options = {
+            page,
+            limit,
+        };
+
+        return this.contactUsModel.paginate(query, options);
+    }
+
+    // This is going to be different based on our needs
     search(page: number = 1, limit: number = 10) {
         const query = {};
 

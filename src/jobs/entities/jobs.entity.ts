@@ -13,6 +13,9 @@ export class JobsModel {
     @Prop({ required: true })
     companyName: string;
 
+    @Prop({ required: true })
+    positionDeadline: Date;
+
     @Prop({ type: Types.ObjectId, ref: JobCategory.name, required: true })
     category: Types.ObjectId;
 
@@ -33,9 +36,6 @@ export class JobsModel {
 
     @Prop({ required: true })
     image: string;
-
-    @Prop({ required: true })
-    bookmarked: boolean;
 }
 
 export const JobsSchema = SchemaFactory.createForClass(JobsModel);

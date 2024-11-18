@@ -31,10 +31,11 @@ export class JobsController {
 
     @Get("search")
     async search(
+        @Query("search_term") searchTerm: string,
         @Query("page", ParsePageAndLimitPipe) page: number,
         @Query("limit", ParsePageAndLimitPipe) limit: number
     ) {
-        return this.jobsService.search(page, limit);
+        return this.jobsService.search(page, limit, searchTerm);
     }
 
     @Get(":id")
@@ -42,16 +43,19 @@ export class JobsController {
         return this.jobsService.getOne(id);
     }
 
+    @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Post()
     async create(@Body() body: JobSDto) {
         return this.jobsService.create(body);
     }
 
+    @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Patch(":id")
     async update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: JobSDto) {
         return this.jobsService.update(id, body);
     }
 
+    @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Delete(":id")
     async delete(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
         return this.jobsService.delete(id);

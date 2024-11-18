@@ -41,8 +41,4 @@ export class JobSDto {
     @IsNotEmpty()
     @IsString()
     image: string;
-
-    @IsNotEmpty()
-    @IsBoolean()
-    bookmarked: boolean;
 }

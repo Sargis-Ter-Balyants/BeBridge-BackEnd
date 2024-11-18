@@ -15,6 +15,11 @@ import { Role } from "src/user/entities/user.entity";
 export class ContactUsController {
     constructor(private readonly contactUsService: ContactUsService) {}
 
+    @Get("")
+    getAll(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
+        return this.contactUsService.getAll(page, limit);
+    }
+
     @Get("search")
     search(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
         return this.contactUsService.search(page, limit);

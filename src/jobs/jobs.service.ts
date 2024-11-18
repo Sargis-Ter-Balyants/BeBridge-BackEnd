@@ -26,13 +26,27 @@ export class JobsService {
         return this.jobModel.paginate({}, { page: 1, limit: 6 });
     }
 
-    async search(page: number = 1, limit: number = 10) {
-        const query = {};
+    async search(page: number = 1, limit: number = 10, searchTerm: string = "") {
+        const query: any = {};
 
         const options = {
             page,
             limit,
+            populate: {
+                path: "category",
+            },
         };
+
+        if (query.searchTerm.length) {
+            query.searchTerm = {
+                $or: [
+                    { positionName: { $regex: searchTerm, $options: "i" } },
+                    { companyName: { $regex: searchTerm, $options: "i" } },
+                    { description: { $regex: searchTerm, $options: "i" } },
+                    { location: { $regex: searchTerm, $options: "i" } },
+                ],
+            };
+        }
 
         return this.jobModel.paginate(query, options);
     }

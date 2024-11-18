@@ -1,3 +1,4 @@
+import { JwtService } from "@nestjs/jwt";
 import { Module } from "@nestjs/common";
 import { ContactUsService } from "./contact-us.service";
 import { ContactUsController } from "./contact-us.controller";
@@ -14,6 +15,6 @@ import { ContactUsModel, ContactUsSchema } from "./entities/contact-us.entity";
         ]),
     ],
     controllers: [ContactUsController],
-    providers: [ContactUsService],
+    providers: [JwtService, ContactUsService],
 })
 export class ContactUsModule {}
