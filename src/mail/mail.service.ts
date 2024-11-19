@@ -12,7 +12,7 @@ export class MailService {
       subject: 'Welcome to TJobs App! Confirm your Email',
       template: 'confirmation',
       context: {
-        name: user.name,
+        email: user.email,
         url: `http://localhost:3030/auth/confirm/${ user.code }`
       }
     });

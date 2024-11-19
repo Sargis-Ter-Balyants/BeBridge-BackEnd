@@ -37,13 +37,6 @@ export class AuthService {
     const user = await this.userModel.create(signup);
 
     await this.mailService.sendUserConfirmation(user);
-
-    const accessToken = this.jwtService.sign({
-      id: user.id,
-      roles: user.roles
-    });
-
-    return { accessToken }
   }
 
   async signin(signin: SigninDto) {
@@ -69,7 +62,7 @@ export class AuthService {
       code,
       confirmed: false
     });
-    if (!user) throw new BadRequestException('Invalid URL');
+    if (!user) throw new BadRequestException('Incorrect credentials');
 
     user.code = undefined;
     user.confirmed = true;
