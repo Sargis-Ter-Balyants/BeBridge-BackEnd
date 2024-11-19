@@ -1,6 +1,6 @@
 import { IsBoolean, IsEmail, IsOptional, IsString, IsStrongPassword, Length } from 'class-validator';
 
-export class UserSettingsDto {
+export class SettingsDto {
   @IsOptional()
   @IsString()
   @Length(2, 50)

@@ -1,11 +1,10 @@
-import { HydratedDocument, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profile.entity';
 import { Education } from './education.entity';
 import { Experience } from './experience.entity';
 import { Skill } from './skill.entity';
-
-export type UserDocument = HydratedDocument<User>;
+import { Jobs } from '../../jobs/entities/jobs.entity';
 
 export enum Role {
   EMPLOYEE = 'employee',
@@ -33,17 +32,20 @@ export class User {
   @Prop({ type: [ String ], required: true, enum: Role })
   roles: Role[];
 
-  @Prop({ type: Types.ObjectId, ref: 'Profile' })
-  profile: Profile | Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: Profile.name })
+  profile: Types.ObjectId;
 
-  @Prop({ type: [ { type: Types.ObjectId, ref: 'Education' } ] })
+  @Prop({ type: [ { type: Types.ObjectId, ref: Education.name } ] })
   education: Types.ObjectId[];
 
-  @Prop({ type: [ { type: Types.ObjectId, ref: 'Experience' } ] })
+  @Prop({ type: [ { type: Types.ObjectId, ref: Experience.name } ] })
   experience: Types.ObjectId[];
 
-  @Prop({ type: [ { type: Types.ObjectId, ref: 'Skill' } ] })
-  skill: Types.ObjectId[];
+  @Prop({ type: [ { type: Types.ObjectId, ref: Skill.name } ] })
+  skills: Types.ObjectId[];
+
+  @Prop({ type: [ { type: Types.ObjectId, ref: Jobs.name } ] })
+  jobs: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

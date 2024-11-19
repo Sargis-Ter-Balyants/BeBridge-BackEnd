@@ -1,14 +1,14 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { PaginateModel, Types } from "mongoose";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { JobsModel } from "./entities/jobs.entity";
+import { Jobs } from "./entities/jobs.entity";
 import { JobSDto } from "./dto/jobs.dto";
 
 @Injectable()
 export class JobsService {
     constructor(
-        @InjectModel(JobsModel.name)
-        private readonly jobModel: PaginateModel<JobsModel>
+        @InjectModel(Jobs.name)
+        private readonly jobModel: PaginateModel<Jobs>
     ) {}
 
     async getAll(page: number = 1, limit: number = 10) {

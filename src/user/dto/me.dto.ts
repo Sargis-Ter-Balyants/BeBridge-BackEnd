@@ -4,10 +4,11 @@ export enum PopulateQuery {
   PROFILE = 'profile',
   EDUCATION = 'education',
   EXPERIENCE = 'experience',
-  SKILL = 'skill'
+  SKILLS = 'skills',
+  JOBS = 'jobs'
 }
 
-export class UserMeDto {
+export class MeDto {
   @IsArray()
   @IsEnum(PopulateQuery, { each: true })
   populate: string[];

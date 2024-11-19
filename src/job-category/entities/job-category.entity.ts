@@ -1,8 +1,5 @@
-import { HydratedDocument } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
-
-export type JobCategoryDocument = HydratedDocument<JobCategory>;
 
 @Schema({ collection: "job-categories", timestamps: true })
 export class JobCategory {

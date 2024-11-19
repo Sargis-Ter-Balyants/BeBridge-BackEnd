@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { JobsModel, JobsSchema } from "./entities/jobs.entity";
+import { Jobs, JobsSchema } from "./entities/jobs.entity";
 import { JobsService } from "./jobs.service";
 import { JobsController } from "./jobs.controller";
 import { JwtService } from "@nestjs/jwt";
@@ -9,7 +9,7 @@ import { JwtService } from "@nestjs/jwt";
     imports: [
         MongooseModule.forFeature([
             {
-                name: JobsModel.name,
+                name: Jobs.name,
                 schema: JobsSchema,
             },
         ]),

@@ -1,20 +1,15 @@
 import { IsDateString, IsNotEmpty, IsString, Length } from 'class-validator';
 
-export class UserEducationDto {
+export class ExperienceDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 50)
-  institution: string;
+  companyName: string;
 
   @IsNotEmpty()
   @IsString()
   @Length(2, 50)
-  department: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Length(2, 50)
-  degree: string;
+  position: string;
 
   @IsNotEmpty()
   @IsDateString()

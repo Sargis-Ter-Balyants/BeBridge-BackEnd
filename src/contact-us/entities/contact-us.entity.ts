@@ -1,8 +1,5 @@
-import { HydratedDocument } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
-
-export type ContactUsDocument = HydratedDocument<ContactUsModel>;
 
 @Schema({ collection: "contact-us", timestamps: true })
 export class ContactUsModel {

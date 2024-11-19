@@ -1,8 +1,6 @@
-import { HydratedDocument, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from './user.entity';
-
-export type EducationDocument = HydratedDocument<Education>;
 
 @Schema({ versionKey: false })
 export class Education {

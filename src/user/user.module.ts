@@ -8,6 +8,7 @@ import { Profile, ProfileSchema } from './entities/profile.entity';
 import { Education, EducationSchema } from './entities/education.entity';
 import { Experience, ExperienceSchema } from './entities/experience.entity';
 import { Skill, SkillSchema } from './entities/skill.entity';
+import { Jobs, JobsSchema } from '../jobs/entities/jobs.entity';
 
 @Module({
   imports: [
@@ -26,6 +27,9 @@ import { Skill, SkillSchema } from './entities/skill.entity';
     }, {
       name: Skill.name,
       schema: SkillSchema
+    }, {
+      name: Jobs.name,
+      schema: JobsSchema
     } ])
   ],
   controllers: [ UserController ],

@@ -4,15 +4,15 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '../auth/auth.guard';
 import { User } from './entities/user.entity';
-import { Profile } from './entities/profile.entity';
-import { UserProfileDto } from './dto/user-profile.dto';
-import { UserSettingsDto } from './dto/user-settings.dto';
-import { Education } from './entities/education.entity';
-import { UserEducationDto } from './dto/user-education.dto';
-import { UserExperienceDto } from './dto/user-experience.dto';
-import { Experience } from './entities/experience.entity';
 import { Skill } from './entities/skill.entity';
-import { UserSkillDto } from './dto/user-skill.dto';
+import { SkillDto } from './dto/skill.dto';
+import { Profile } from './entities/profile.entity';
+import { ProfileDto } from './dto/profile.dto';
+import { Education } from './entities/education.entity';
+import { EducationDto } from './dto/education.dto';
+import { Experience } from './entities/experience.entity';
+import { ExperienceDto } from './dto/experience.dto';
+import { SettingsDto } from './dto/settings.dto';
 
 @Injectable()
 export class UserService {
@@ -45,7 +45,7 @@ export class UserService {
     return user;
   }
 
-  async account(payload: JwtPayload, accountDto: UserProfileDto) {
+  async account(payload: JwtPayload, accountDto: ProfileDto) {
     const user = await this.userModel
       .findById(payload.id)
       .populate('profile');
@@ -59,14 +59,14 @@ export class UserService {
     );
 
     if (!user.profile) {
-      user.profile = profile;
+      user.profile = profile.id;
       await user.save();
     }
 
     return profile;
   }
 
-  async education(payload: JwtPayload, educationDto: UserEducationDto) {
+  async education(payload: JwtPayload, educationDto: EducationDto) {
     const user = await this.userModel
       .findById(payload.id)
       .populate('education');
@@ -87,7 +87,7 @@ export class UserService {
     return education;
   }
 
-  async experience(payload: JwtPayload, experienceDto: UserExperienceDto) {
+  async experience(payload: JwtPayload, experienceDto: ExperienceDto) {
     const user = await this.userModel
       .findById(payload.id)
       .populate('experience');
@@ -108,10 +108,10 @@ export class UserService {
     return experience;
   }
 
-  async skill(payload: JwtPayload, skillDto: UserSkillDto) {
+  async skill(payload: JwtPayload, skillDto: SkillDto) {
     const user = await this.userModel
       .findById(payload.id)
-      .populate('skill');
+      .populate('skills');
 
     if (!user) throw new UnauthorizedException('User not found');
 
@@ -121,15 +121,15 @@ export class UserService {
       { new: true, upsert: true }
     );
 
-    if (!user.skill.includes(skill.id)) {
-      user.skill.push(skill.id);
+    if (!user.skills.includes(skill.id)) {
+      user.skills.push(skill.id);
       await user.save();
     }
 
     return skill;
   }
 
-  async settings(payload: JwtPayload, settingsDto: UserSettingsDto) {
+  async settings(payload: JwtPayload, settingsDto: SettingsDto) {
     const user = await this.userModel.findOne({ _id: payload.id });
     if (!user) throw new UnauthorizedException('User not found');
 

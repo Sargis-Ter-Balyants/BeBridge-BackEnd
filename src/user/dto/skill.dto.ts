@@ -1,6 +1,6 @@
 import { IsInt, IsNotEmpty, IsString, Length, Max, Min } from 'class-validator';
 
-export class UserSkillDto {
+export class SkillDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 50)

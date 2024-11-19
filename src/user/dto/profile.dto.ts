@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString, IsUrl, Length } from 'class-validator';
 
-export class UserProfileDto {
+export class ProfileDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 50)
