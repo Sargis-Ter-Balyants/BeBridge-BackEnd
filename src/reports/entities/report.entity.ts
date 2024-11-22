@@ -13,7 +13,7 @@ export class ReportsModel {
     position: string;
 
     @Prop({ required: true })
-    totalQuestions: string;
+    totalQuestions: number;
 
     @Prop({ required: true })
     status: 0 | 1 | 2;

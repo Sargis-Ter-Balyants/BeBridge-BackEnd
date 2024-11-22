@@ -7,7 +7,8 @@ export class ReportsDTO {
     company: string;
 
     @IsNotEmpty()
-    @IsInt()
+    @IsString()
+    @Length(2, 100)
     position: string;
 
     @IsNotEmpty()
