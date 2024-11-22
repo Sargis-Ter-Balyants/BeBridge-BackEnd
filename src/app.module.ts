@@ -7,6 +7,7 @@ import { UserModule } from "./user/user.module";
 import { JobCategoriesModule } from "./job-category/job-category.module";
 import { JobsModule } from "./jobs/jobs.module";
 import { ContactUsModule } from "./contact-us/contact-us.module";
+import { ReportsModule } from './reports/reports.module';
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -30,6 +31,7 @@ const NODE_ENV = process.env.NODE_ENV;
         JobCategoriesModule,
         JobsModule,
         ContactUsModule,
+        ReportsModule,
     ],
 })
 export class AppModule {}
