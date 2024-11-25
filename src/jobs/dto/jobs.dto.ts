@@ -3,6 +3,9 @@ import { Types } from "mongoose";
 
 export class JobSDto {
     @IsNotEmpty()
+    companyId: Types.ObjectId;
+
+    @IsNotEmpty()
     @IsString()
     @Length(2, 100)
     positionName: string;
