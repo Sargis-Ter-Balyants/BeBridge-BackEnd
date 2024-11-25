@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Answer } from './answer.dto';
-import { AnswerType } from '../entities/test.entity';
+import { AnswerType } from '../../../test/entities/test.entity';
 
 export class CreateTestDto {
   @IsNotEmpty()

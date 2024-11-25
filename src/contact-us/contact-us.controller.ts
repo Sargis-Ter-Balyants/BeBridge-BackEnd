@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } f
 import { ContactUsService } from "./contact-us.service";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { Types } from "mongoose";
-import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
-import { ParsePageAndLimitPipe } from "pipes/pageAndLimit.pipe";
+import { IsObjectId } from "src/utils/object-id.pipe";
+import { IsPaginate } from "src/utils/paginate.pipe";
 import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
 import { Roles } from "src/auth/role.decorator";
@@ -16,17 +16,17 @@ export class ContactUsController {
     constructor(private readonly contactUsService: ContactUsService) {}
 
     @Get("")
-    getAll(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
+    getAll(@Query("page", IsPaginate) page: number, @Query("limit", IsPaginate) limit: number) {
         return this.contactUsService.getAll(page, limit);
     }
 
     @Get("search")
-    search(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
+    search(@Query("page", IsPaginate) page: number, @Query("limit", IsPaginate) limit: number) {
         return this.contactUsService.search(page, limit);
     }
 
     @Get(":id")
-    findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    findOne(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.contactUsService.findOne(id);
     }
 
@@ -37,12 +37,12 @@ export class ContactUsController {
     }
 
     @Patch(":id")
-    update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: ContactUsDto) {
+    update(@Param("id", IsObjectId) id: Types.ObjectId, @Body() body: ContactUsDto) {
         return this.contactUsService.update(id, body);
     }
 
     @Delete(":id")
-    remove(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    remove(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.contactUsService.delete(id);
     }
 }

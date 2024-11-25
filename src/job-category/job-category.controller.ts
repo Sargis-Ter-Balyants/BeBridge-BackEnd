@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { Types } from "mongoose";
 import { JobCategoryDto } from "./dto/job-category.dto";
 import { JobCategoryService } from "./job-category.service";
-import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
-import { ParsePageAndLimitPipe } from "pipes/pageAndLimit.pipe";
+import { IsObjectId } from "src/utils/object-id.pipe";
+import { IsPaginate } from "src/utils/paginate.pipe";
 
 @Controller("job-category")
 export class JobCategoryController {
@@ -11,27 +11,27 @@ export class JobCategoryController {
 
     @Get()
     async getAll(
-        @Query("page", ParsePageAndLimitPipe) page: number,
-        @Query("limit", ParsePageAndLimitPipe) limit: number
+        @Query("page", IsPaginate) page: number,
+        @Query("limit", IsPaginate) limit: number
     ) {
         return this.jobCategoryService.getAll(page, limit);
     }
 
     @Get()
     async search(
-        @Query("page", ParsePageAndLimitPipe) page: number,
-        @Query("limit", ParsePageAndLimitPipe) limit: number
+        @Query("page", IsPaginate) page: number,
+        @Query("limit", IsPaginate) limit: number
     ) {
         return this.jobCategoryService.search(page, limit);
     }
 
     @Get("popular")
-    async getMostPopular(@Query("limit", ParsePageAndLimitPipe) limit: number) {
+    async getMostPopular(@Query("limit", IsPaginate) limit: number) {
         return this.jobCategoryService.getMostPopular(limit);
     }
 
     @Get(":id")
-    async findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    async findOne(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.jobCategoryService.getOne(id);
     }
 
@@ -41,12 +41,12 @@ export class JobCategoryController {
     }
 
     @Patch(":id")
-    async update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() jobCategory: JobCategoryDto) {
+    async update(@Param("id", IsObjectId) id: Types.ObjectId, @Body() jobCategory: JobCategoryDto) {
         return this.jobCategoryService.update(id, jobCategory);
     }
 
     @Delete(":id")
-    async delete(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    async delete(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.jobCategoryService.delete(id);
     }
 }
