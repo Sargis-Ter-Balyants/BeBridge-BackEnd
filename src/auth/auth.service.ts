@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'node:crypto';
+import * as crypto from 'crypto';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
