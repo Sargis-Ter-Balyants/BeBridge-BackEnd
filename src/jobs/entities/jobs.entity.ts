@@ -5,6 +5,9 @@ import { JobCategory } from "src/job-category/entities/job-category.entity";
 
 @Schema({ collection: "jobs", timestamps: true })
 export class Jobs {
+    @Prop({ type: Types.ObjectId, ref: JobCategory.name, required: true })
+    companyId: Types.ObjectId;
+
     @Prop({ required: true })
     positionName: string;
 
