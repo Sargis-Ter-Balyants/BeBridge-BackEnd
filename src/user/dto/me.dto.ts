@@ -11,5 +11,5 @@ export enum PopulateQuery {
 export class MeDto {
   @IsArray()
   @IsEnum(PopulateQuery, { each: true })
-  populate: string[];
+  populate: PopulateQuery[];
 }
