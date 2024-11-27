@@ -9,6 +9,7 @@ import { Roles } from "src/auth/role.decorator";
 import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
 import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
+
 @UseGuards(AuthGuard, RoleGuard)
 @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
 @Controller("jobs")
