@@ -4,10 +4,10 @@ import { JobSDto } from "./dto/jobs.dto";
 import { JobsService } from "./jobs.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
-import { ParseObjectIdPipe } from "pipes/objectIdPipe.pipe";
+import { IsObjectId } from "src/utils/object-id.pipe";
 import { Role } from "src/user/entities/user.entity";
 import { Roles } from "src/auth/role.decorator";
-import { ParsePageAndLimitPipe } from "pipes/pageAndLimit.pipe";
+import { IsPaginate } from "src/utils/paginate.pipe";
 
 @UseGuards(AuthGuard, RoleGuard)
 @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
@@ -16,7 +16,7 @@ export class JobsController {
     constructor(private readonly jobsService: JobsService) {}
 
     @Get()
-    getAll(@Query("page", ParsePageAndLimitPipe) page: number, @Query("limit", ParsePageAndLimitPipe) limit: number) {
+    getAll(@Query("page", IsPaginate) page: number, @Query("limit", IsPaginate) limit: number) {
         return this.jobsService.getAll(page, limit);
     }
 
@@ -29,8 +29,8 @@ export class JobsController {
     @Get("search")
     search(
         @Query("search_term") searchTerm: string,
-        @Query("page", ParsePageAndLimitPipe) page: number,
-        @Query("limit", ParsePageAndLimitPipe) limit: number,
+        @Query("page", IsPaginate) page: number,
+        @Query("limit", IsPaginate) limit: number,
         @Query("category_id") categoryId: string,
         // @Query("type") type: string,
         // @Query("level") level: string,
@@ -50,7 +50,7 @@ export class JobsController {
     }
 
     @Get(":id")
-    findOne(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    findOne(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.jobsService.getOne(id);
     }
 
@@ -62,13 +62,13 @@ export class JobsController {
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Patch(":id")
-    update(@Param("id", ParseObjectIdPipe) id: Types.ObjectId, @Body() body: JobSDto) {
+    update(@Param("id", IsObjectId) id: Types.ObjectId, @Body() body: JobSDto) {
         return this.jobsService.update(id, body);
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Delete(":id")
-    delete(@Param("id", ParseObjectIdPipe) id: Types.ObjectId) {
+    delete(@Param("id", IsObjectId) id: Types.ObjectId) {
         return this.jobsService.delete(id);
     }
 }
