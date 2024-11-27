@@ -1,7 +1,7 @@
 import { PipeTransform, Injectable, BadRequestException } from "@nestjs/common";
 
 @Injectable()
-export class IsPaginate implements PipeTransform {
+export class ParseNumber implements PipeTransform {
     transform(value: string) {
         const parsedValue = parseInt(value, 10);
 
