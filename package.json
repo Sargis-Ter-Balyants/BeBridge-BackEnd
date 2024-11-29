@@ -1,8 +1,8 @@
 {
-  "name": "tjobs",
+  "name": "be-bridge",
   "version": "0.0.1",
   "description": "",
-  "author": "TJobs LTD",
+  "author": "BeBridge LTD",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

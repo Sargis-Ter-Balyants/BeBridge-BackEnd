@@ -4,8 +4,8 @@ export enum PopulateQuery {
   PROFILE = 'profile',
   EDUCATION = 'education',
   EXPERIENCE = 'experience',
-  SKILLS = 'skills',
-  JOBS = 'jobs'
+  SKILL = 'skill',
+  BOOKMARK = 'bookmark'
 }
 
 export class MeDto {
