@@ -1,14 +1,28 @@
-import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Query,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { Types } from 'mongoose';
-import { UserService } from './user.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { MeDto } from './dto/me.dto';
 import { ProfileDto } from './dto/profile.dto';
 import { SettingsDto } from './dto/settings.dto';
 import { EducationDto } from './dto/education.dto';
 import { ExperienceDto } from './dto/experience.dto';
 import { SkillDto } from './dto/skill.dto';
+import { UserService } from './user.service';
 import { AuthGuard, RequestWithUser } from '../auth/auth.guard';
 import { ParseObjectId } from '../utils/pipes/parseObjectId.pipe';
+import { multer } from '../utils/multer';
 
 @Controller('user')
 export class UserController {
@@ -22,8 +36,13 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Patch('account')
-  account(@Req() req: RequestWithUser, @Body() account: ProfileDto) {
-    return this.userService.account(req.user, account);
+  @UseInterceptors(FileInterceptor('avatar', multer))
+  account(
+    @Req() req: RequestWithUser,
+    @Body() account: ProfileDto,
+    @UploadedFile() avatar: Express.Multer.File
+  ) {
+    return this.userService.account(req.user, account, avatar);
   }
 
   @UseGuards(AuthGuard)

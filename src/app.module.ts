@@ -1,5 +1,7 @@
+import * as path from 'node:path';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
@@ -27,6 +29,10 @@ const NODE_ENV = process.env.NODE_ENV;
       useFactory: (config: ConfigService) => ({
         uri: config.get<string>('DB_URI')
       })
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads'
     }),
     AuthModule,
     UserModule,

@@ -50,7 +50,7 @@ export class UserService {
     return user;
   }
 
-  async account(payload: JwtPayload, accountDto: ProfileDto) {
+  async account(payload: JwtPayload, accountDto: ProfileDto, avatar?: Express.Multer.File) {
     const user = await this.userModel
       .findById(payload.id)
       .populate('profile');
@@ -59,7 +59,10 @@ export class UserService {
 
     const profile = await this.profileModel.findOneAndUpdate(
       { user: new Types.ObjectId(user.id) },
-      { ...accountDto },
+      {
+        ...accountDto,
+        avatar: avatar.path
+      },
       { new: true, upsert: true }
     );
 
