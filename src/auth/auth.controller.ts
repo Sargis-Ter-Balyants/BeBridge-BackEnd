@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req, Res, Patch } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
@@ -41,8 +41,8 @@ export class AuthController {
     return this.authService.signin(signin);
   }
 
-  @Get('confirm/:code')
-  confirm(@Param('code') code: string) {
+  @Patch('confirm')
+  confirm(@Body('code') code: string) {
     return this.authService.confirm(code);
   }
 }

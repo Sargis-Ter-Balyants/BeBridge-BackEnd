@@ -9,10 +9,10 @@ export class MailService {
   async sendUserConfirmation(user: User) {
     await this.mailerService.sendMail({
       to: user.email,
-      subject: 'Welcome to TJobs App! Confirm your Email',
+      subject: 'Welcome to BeBridge App! Confirm your Email',
       template: 'confirmation',
       context: {
-        name: user.name,
+        email: user.email,
         url: `http://localhost:3030/auth/confirm/${ user.code }`
       }
     });

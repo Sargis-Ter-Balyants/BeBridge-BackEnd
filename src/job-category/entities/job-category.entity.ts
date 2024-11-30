@@ -1,19 +1,16 @@
-import { HydratedDocument } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as mongoosePaginate from 'mongoose-paginate-v2';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import * as mongoosePaginate from "mongoose-paginate-v2";
 
-export type JobCategoryDocument = HydratedDocument<JobCategory>;
-
-@Schema()
+@Schema({ collection: "job-categories", timestamps: true })
 export class JobCategory {
-  @Prop({ required: true })
-  name: string;
+    @Prop({ required: true })
+    name: string;
 
-  @Prop({ default: 0 })
-  popularity: number;
+    @Prop({ default: 0 })
+    popularity: number;
 
-  @Prop({ default: 0 })
-  availableJobs: number;
+    @Prop({ default: 0 })
+    availableJobs: number;
 }
 
 export const JobCategorySchema = SchemaFactory.createForClass(JobCategory);

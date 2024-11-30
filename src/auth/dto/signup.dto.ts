@@ -1,4 +1,14 @@
-import { ArrayNotEmpty, IsArray, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsStrongPassword,
+  Length
+} from 'class-validator';
 import { Role } from '../../user/entities/user.entity';
 
 export class SignupDto {
@@ -15,8 +25,13 @@ export class SignupDto {
   code?: string;
 
   @IsNotEmpty()
-  @IsString()
-  @Length(8, 12)
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+    minUppercase: 1
+  })
   password: string;
 
   @IsArray()

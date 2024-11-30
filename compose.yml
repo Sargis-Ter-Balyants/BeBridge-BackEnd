@@ -2,7 +2,7 @@ services:
   mongo:
     image: mongo
     restart: always
-    container_name: TJobsDB
+    container_name: be-bridge
     ports:
       - "27017:${DB_PORT}"
     environment:

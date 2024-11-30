@@ -1,40 +1,52 @@
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl, Length } from 'class-validator';
 
 export class ProfileDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(2, 12)
-  name: string;
+  @Length(2, 50)
+  firstName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(2, 12)
-  surname: string;
+  @Length(2, 50)
+  lastName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(2, 12)
-  username: string;
+  @Length(2, 255)
+  headline: string;
 
-  @IsOptional()
-  @IsEmail()
-  email: string;
-
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
+  @Length(2, 255)
+  biography: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 255)
   address: string;
 
   @IsOptional()
   @IsString()
-  avatarUrl?: string;
+  avatar?: string;
 
   @IsOptional()
-  @IsString()
-  @Length(8, 12)
-  password: string;
+  @IsUrl()
+  website?: string;
 
+  @IsUrl()
   @IsOptional()
-  @IsString()
-  @Length(8, 12)
-  confirmPassword: string;
+  behance?: string;
+
+  @IsUrl()
+  @IsOptional()
+  facebook?: string;
+
+  @IsUrl()
+  @IsOptional()
+  linkedin?: string;
+
+  @IsUrl()
+  @IsOptional()
+  youtube?: string;
 }
