@@ -31,7 +31,17 @@ export class JobSDto {
 
     @IsNotEmpty()
     @IsString()
-    type: string;
+    type: "Full-time" | "Part-time" | "Freelance " | "Remote" | "Contract" | "Internship";
+
+    @IsNotEmpty()
+    @IsString()
+    education:
+        | "Bachelor's degree"
+        | "Master's degree"
+        | "Doctorate"
+        | "Diploma/Certificate"
+        | "High School"
+        | "Vocational Training";
 
     @IsNotEmpty()
     @IsString()
