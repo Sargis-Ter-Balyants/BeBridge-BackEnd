@@ -27,7 +27,16 @@ export class Jobs {
     description: string;
 
     @Prop({ required: true })
-    type: string;
+    type: "Full-time" | "Part-time" | "Freelance " | "Remote" | "Contract" | "Internship";
+
+    @Prop({ required: true })
+    education:
+        | "Bachelor's degree"
+        | "Master's degree"
+        | "Doctorate"
+        | "Diploma/Certificate"
+        | "High School"
+        | "Vocational Training";
 
     @Prop({ required: true })
     level: string;
@@ -38,9 +47,7 @@ export class Jobs {
     @Prop({ required: true })
     image: string;
 
-    // Full-time, Part-time, Freelance, Remote, Contract, Internship (job types)
-
-    // Bachelor's degree, Master's degree, Doctorate, Diploma/Certificate, High School, Vocational Training(education)
+    // (education)
 }
 
 export const JobsSchema = SchemaFactory.createForClass(Jobs);

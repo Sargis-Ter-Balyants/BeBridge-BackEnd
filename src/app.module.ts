@@ -11,6 +11,7 @@ import { ReportsModule } from "./reports/reports.module";
 import { TestModule } from "./test/test.module";
 import { NewsModule } from "./news/news.module";
 import { TestModule as AdminTestModule } from "./admin/test/test.module";
+import { NotificationsModule } from './notifications/notifications.module';
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -38,6 +39,7 @@ const NODE_ENV = process.env.NODE_ENV;
         TestModule,
         AdminTestModule,
         NewsModule,
+        NotificationsModule,
     ],
 })
 export class AppModule {}
