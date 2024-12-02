@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { Model, PopulateOptions, Types } from 'mongoose';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '../auth/auth.guard';
 import { User } from './entities/user.entity';
@@ -13,6 +13,7 @@ import { EducationDto } from './dto/education.dto';
 import { Experience } from './entities/experience.entity';
 import { ExperienceDto } from './dto/experience.dto';
 import { SettingsDto } from './dto/settings.dto';
+import { Jobs } from '../jobs/entities/jobs.entity';
 
 @Injectable()
 export class UserService {
@@ -26,14 +27,18 @@ export class UserService {
     @InjectModel(Experience.name)
     private readonly experienceModel: Model<Experience>,
     @InjectModel(Skill.name)
-    private readonly skillModel: Model<Skill>
+    private readonly skillModel: Model<Skill>,
+    @InjectModel(Jobs.name)
+    private readonly jobModel: Model<Jobs>
   ) {}
 
   async me(payload: JwtPayload, query: { populate: string[] }) {
-    const populate = query.populate.map((item: string) => ({
-      path: item,
-      model: item.charAt(0).toUpperCase() + item.slice(1)
-    })) as PopulateOptions[];
+    const populate = query.populate.map((item) => {
+      return {
+        path: item,
+        model: item === 'bookmark' ? 'Jobs' : item.charAt(0).toUpperCase() + item.slice(1)
+      }
+    }) as PopulateOptions[];
 
     const user = await this.userModel
       .findById(payload.id, '-password')
@@ -45,7 +50,7 @@ export class UserService {
     return user;
   }
 
-  async account(payload: JwtPayload, accountDto: ProfileDto) {
+  async account(payload: JwtPayload, accountDto: ProfileDto, avatar?: Express.Multer.File) {
     const user = await this.userModel
       .findById(payload.id)
       .populate('profile');
@@ -54,7 +59,10 @@ export class UserService {
 
     const profile = await this.profileModel.findOneAndUpdate(
       { user: new Types.ObjectId(user.id) },
-      { ...accountDto },
+      {
+        ...accountDto,
+        avatar: avatar.path
+      },
       { new: true, upsert: true }
     );
 
@@ -121,8 +129,8 @@ export class UserService {
       { new: true, upsert: true }
     );
 
-    if (!user.skills.includes(skill.id)) {
-      user.skills.push(skill.id);
+    if (!user.skill.includes(skill.id)) {
+      user.skill.push(skill.id);
       await user.save();
     }
 
@@ -148,6 +156,33 @@ export class UserService {
       { ...settingsDto },
       { new: true, projection: '-password' }
     );
+  }
+
+  async bookmark(payload: JwtPayload, id: Types.ObjectId) {
+    const job = await this.jobModel.findById(id);
+    if (!job) throw new BadRequestException('Job not found');
+
+    const user = await this.userModel.findByIdAndUpdate(
+      payload.id,
+      [ {
+        $set: {
+          bookmark: {
+            $cond: {
+              if: { $in: [ new Types.ObjectId(id), '$bookmark' ] },
+              then: { $setDifference: [ '$bookmark', [ new Types.ObjectId(id) ] ] },
+              else: { $concatArrays: [ '$bookmark', [ new Types.ObjectId(id) ] ] }
+            }
+          }
+        }
+      } ],
+      { new: true }
+    ).populate({
+      path: 'bookmark',
+      model: 'Jobs'
+    });
+    if (!user) throw new UnauthorizedException('User not found');
+
+    return user.bookmark;
   }
 
   async remove(payload: JwtPayload) {

@@ -13,7 +13,13 @@ export class TestService {
     private readonly testModel: Model<Test>
   ) {}
 
-  async create(payload: JwtPayload, createTestDto: CreateTestDto) {
+  async create(payload: JwtPayload, createTestDto: CreateTestDto, images: { [key: string]: Express.Multer.File[] }) {
+    const data = Object.values(images).flat();
+
+    for (let i = 0; i < createTestDto.answers.length; i++) {
+      createTestDto.answers[i].image = data.find(image => image.fieldname === `answers[${ i }][image]`).path;
+    }
+
     return this.testModel.create({
       ...createTestDto,
       createdBy: new Types.ObjectId(payload.id),

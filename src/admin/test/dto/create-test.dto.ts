@@ -20,15 +20,16 @@ export class CreateTestDto {
   @Length(2, 1000)
   question: string;
 
+  @Type(() => Answer)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(2)
-  @Type(() => Answer)
   answers: Answer[]
 
   @IsEnum(AnswerType, { each: true })
   answersType: AnswerType;
 
+  @Type(() => Number)
   @IsInt()
   @Min(10 * 60)
   @Max(2 * 60 * 60)
