@@ -2,13 +2,13 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { ReportsDTO } from "./dto/reports.dto";
 import { PaginateModel, Types } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { ReportsModel } from "./entities/report.entity";
+import { ReportsModel, ReportsPaginateModel } from "./entities/report.entity";
 
 @Injectable()
 export class ReportsService {
     constructor(
         @InjectModel(ReportsModel.name)
-        private readonly reportsModel: PaginateModel<ReportsModel>
+        private readonly reportsModel: ReportsPaginateModel
     ) {}
 
     getAll(page: number, limit: number) {

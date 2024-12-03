@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { PaginateModel, Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
 import { JobCategory } from "src/job-category/entities/job-category.entity";
@@ -27,7 +27,7 @@ export class Jobs {
     description: string;
 
     @Prop({ required: true })
-    type: "Full-time" | "Part-time" | "Freelance " | "Remote" | "Contract" | "Internship";
+    type: "Full-time" | "Part-time" | "Freelance" | "Remote" | "Contract" | "Internship";
 
     @Prop({ required: true })
     education:
@@ -46,10 +46,11 @@ export class Jobs {
 
     @Prop({ required: true })
     image: string;
-
-    // (education)
 }
 
+export type JobsDocument = Jobs & Document;
 export const JobsSchema = SchemaFactory.createForClass(Jobs);
 
 JobsSchema.plugin(mongoosePaginate);
+
+export type JobsPaginateModel = PaginateModel<JobsDocument>;

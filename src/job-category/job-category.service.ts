@@ -1,14 +1,14 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { PaginateModel, Types } from "mongoose";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { JobCategory } from "./entities/job-category.entity";
+import { JobCategory, JobCategoryPaginateModel } from "./entities/job-category.entity";
 import { JobCategoryDto } from "./dto/job-category.dto";
 
 @Injectable()
 export class JobCategoryService {
     constructor(
         @InjectModel(JobCategory.name)
-        private readonly jobCategoryModel: PaginateModel<JobCategory>
+        private readonly jobCategoryModel: JobCategoryPaginateModel
     ) {}
 
     async getMostPopular(limit: number = 6) {

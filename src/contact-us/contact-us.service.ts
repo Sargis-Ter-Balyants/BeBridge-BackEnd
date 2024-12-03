@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { ContactUsModel } from "./entities/contact-us.entity";
+import { ContactUsModel, ContactUsPaginateModel } from "./entities/contact-us.entity";
 import { PaginateModel, Types } from "mongoose";
 
 @Injectable()
 export class ContactUsService {
     constructor(
         @InjectModel(ContactUsModel.name)
-        private readonly contactUsModel: PaginateModel<ContactUsModel>
+        private readonly contactUsModel: ContactUsPaginateModel
     ) {}
 
     getAll(page: number = 1, limit: number = 10) {

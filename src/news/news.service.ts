@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { PaginateModel, Types } from "mongoose";
-import { NewsModel } from "./entities/news.entity";
+import { NewsModel, NewsPaginateModel } from "./entities/news.entity";
 import { NewsDTO } from "./dto/news.dto";
 
 @Injectable()
 export class NewsService {
     constructor(
         @InjectModel(NewsModel.name)
-        private readonly newsModel: PaginateModel<NewsModel>
+        private readonly newsModel: NewsPaginateModel
     ) {}
 
     getAll(page: number = 1, limit: number = 10) {
