@@ -16,8 +16,8 @@ export class TestService {
   async create(payload: JwtPayload, createTestDto: CreateTestDto, images: { [key: string]: Express.Multer.File[] }) {
     const data = Object.values(images).flat();
 
-    for (let i = 0; i < createTestDto.answers.length; i++) {
-      createTestDto.answers[i].image = data.find(image => image.fieldname === `answers[${ i }][image]`).path;
+    for (let i = 0; i < createTestDto.answers?.length; i++) {
+      createTestDto.answers[i].image = data.find(image => image.fieldname === `answers[${ i }][image]`)?.path;
     }
 
     return this.testModel.create({
@@ -28,12 +28,26 @@ export class TestService {
   }
 
   async findOne(id: Types.ObjectId) {
-    const test = await this.testModel.findOne({ _id: id, published: true });
+    const test = await this.testModel.findOne({ _id: id, published: true }).populate('job');
 
     if (!test) throw new NotFoundException('Test not found');
+
+    return test;
   }
 
-  async update(payload: JwtPayload, id: Types.ObjectId, updateTestDto: UpdateTestDto) {
+  async findAll() {
+    return this.testModel.find().populate('job');
+  }
+
+  async update(payload: JwtPayload, id: Types.ObjectId, updateTestDto: UpdateTestDto, images: {
+    [key: string]: Express.Multer.File[]
+  }) {
+    const data = Object.values(images).flat();
+
+    for (let i = 0; i < updateTestDto.answers?.length; i++) {
+      updateTestDto.answers[i].image = data.find(image => image.fieldname === `answers[${ i }][image]`)?.path;
+    }
+
     const test = await this.testModel.findOneAndUpdate({ _id: id }, {
       ...updateTestDto,
       updatedBy: new Types.ObjectId(payload.id)

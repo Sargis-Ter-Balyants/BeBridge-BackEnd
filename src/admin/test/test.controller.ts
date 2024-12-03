@@ -12,6 +12,7 @@ import {
   UploadedFiles
 } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { TestService } from './test.service';
 import { RoleGuard } from '../../auth/role.guard';
 import { Roles } from '../../auth/role.decorator';
@@ -20,7 +21,6 @@ import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
 import { AuthGuard, RequestWithUser } from '../../auth/auth.guard';
 import { ParseObjectId } from 'src/utils/pipes/parseObjectId.pipe';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { multer } from '../../utils/multer';
 
 @Controller('admin/test')
@@ -41,8 +41,8 @@ export class TestController {
   ))
   create(
     @Req() req: RequestWithUser,
-    @UploadedFiles() images: { [key: string]: Express.Multer.File[] },
     @Body() createTestDto: CreateTestDto,
+    @UploadedFiles() images: { [key: string]: Express.Multer.File[] }
   ) {
     return this.testService.create(req.user, createTestDto, images);
   }
@@ -56,9 +56,30 @@ export class TestController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(Role.MODERATOR, Role.EMPLOYER)
+  @Get()
+  findAll() {
+    return this.testService.findAll();
+  }
+
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(Role.MODERATOR, Role.EMPLOYER)
   @Patch(':id')
-  update(@Req() req: RequestWithUser, @Param('id', ParseObjectId) id: Types.ObjectId, @Body() updateTestDto: UpdateTestDto) {
-    return this.testService.update(req.user, id, updateTestDto);
+  @UseInterceptors(FileFieldsInterceptor(
+    [
+      { name: 'answers[0][image]', maxCount: 1 },
+      { name: 'answers[1][image]', maxCount: 1 },
+      { name: 'answers[2][image]', maxCount: 1 },
+      { name: 'answers[3][image]', maxCount: 1 }
+    ],
+    multer
+  ))
+  update(
+    @Req() req: RequestWithUser,
+    @Param('id', ParseObjectId) id: Types.ObjectId,
+    @Body() updateTestDto: UpdateTestDto,
+    @UploadedFiles() images: { [key: string]: Express.Multer.File[] }
+  ) {
+    return this.testService.update(req.user, id, updateTestDto, images);
   }
 
   @UseGuards(AuthGuard, RoleGuard)
