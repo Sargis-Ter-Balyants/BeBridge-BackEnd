@@ -2,7 +2,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsEnum,
-  IsInt,
+  IsInt, IsMongoId,
   IsNotEmpty,
   IsString,
   Length,
@@ -11,10 +11,14 @@ import {
   ValidateNested
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Types } from 'mongoose';
 import { Answer } from './answer.dto';
 import { AnswerType } from '../../../test/entities/test.entity';
 
 export class CreateTestDto {
+  @IsMongoId()
+  job: Types.ObjectId;
+
   @IsNotEmpty()
   @IsString()
   @Length(2, 1000)

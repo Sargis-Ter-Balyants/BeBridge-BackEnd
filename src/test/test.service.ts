@@ -1,5 +1,5 @@
-import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Model, Types } from 'mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Test } from './entities/test.entity';
 
@@ -10,12 +10,17 @@ export class TestService {
     private readonly testModel: Model<Test>
   ) {}
 
-  async findAll() {
-    return this.testModel.find({
+  async findOne(id: Types.ObjectId) {
+    const test = await this.testModel.findOne({
+      _id: id,
       published: true
     }, {
       'answers.correct': 0
-    });
+    }).populate('job');
+
+    if (!test) throw new NotFoundException('Test not found');
+
+    return test;
   }
 
   async search(query: string[]) {

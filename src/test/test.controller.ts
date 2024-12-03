@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { TestService } from './test.service';
+import { ParseObjectId } from '../utils/pipes/parseObjectId.pipe';
 
 @Controller('test')
 export class TestController {
   constructor(private readonly testService: TestService) {}
 
-  @Get()
-  findAll() {
-    return this.testService.findAll();
+  @Get(':id')
+  findOne(@Param('id', ParseObjectId) id: Types.ObjectId) {
+    return this.testService.findOne(id);
   }
 
   @Get('search')

@@ -1,5 +1,5 @@
 import { IsString, IsBoolean, IsInt, IsOptional, IsNotEmpty, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class Answer {
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class Answer {
   @Min(1)
   order: number;
 
-  @Type(() => Boolean)
+  @Transform(({value}) => value === 'true')
   @IsBoolean()
   correct: boolean;
 }
