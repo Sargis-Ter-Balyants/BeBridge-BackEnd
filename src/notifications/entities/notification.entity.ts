@@ -1,8 +1,6 @@
-import { HydratedDocument, Types, PaginateModel } from "mongoose";
+import { Types, Schema as MongooseSchema } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
-
-export type NotificationsDocument = HydratedDocument<NotificationsModel>;
 
 @Schema({ collection: "notifications", timestamps: true })
 export class NotificationsModel {
@@ -24,6 +22,4 @@ export class NotificationsModel {
 
 export const NotificationsSchema = SchemaFactory.createForClass(NotificationsModel);
 
-NotificationsSchema.plugin(mongoosePaginate);
-
-export type NotificationsPaginateModel = PaginateModel<NotificationsDocument>;
+(NotificationsSchema as MongooseSchema<any>).plugin(mongoosePaginate);

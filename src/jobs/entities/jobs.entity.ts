@@ -1,4 +1,4 @@
-import { PaginateModel, Types } from "mongoose";
+import { Types, Schema as MongooseSchema } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
 import { JobCategory } from "src/job-category/entities/job-category.entity";
@@ -48,9 +48,6 @@ export class Jobs {
     image: string;
 }
 
-export type JobsDocument = Jobs & Document;
 export const JobsSchema = SchemaFactory.createForClass(Jobs);
 
-JobsSchema.plugin(mongoosePaginate);
-
-export type JobsPaginateModel = PaginateModel<JobsDocument>;
+(JobsSchema as MongooseSchema<any>).plugin(mongoosePaginate);

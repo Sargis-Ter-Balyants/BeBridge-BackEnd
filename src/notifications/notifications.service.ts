@@ -2,13 +2,13 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { NotificationsDTO } from "./dto/notifications.dto";
 import { PaginateModel, Types } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { NotificationsModel, NotificationsPaginateModel } from "./entities/notification.entity";
+import { NotificationsModel } from "./entities/notification.entity";
 
 @Injectable()
 export class NotificationsService {
     constructor(
         @InjectModel(NotificationsModel.name)
-        private readonly notificationsModel: NotificationsPaginateModel
+        private readonly notificationsModel: PaginateModel<NotificationsModel>
     ) {}
 
     getAll(page: number, limit: number) {
