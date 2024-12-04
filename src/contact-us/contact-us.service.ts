@@ -17,9 +17,10 @@ export class ContactUsService {
         const options = {
             page,
             limit,
+            query
         };
 
-        return this.contactUsModel.paginate(query, options);
+        return this.contactUsModel.paginate(options);
     }
 
     // This is going to be different based on our needs
@@ -27,15 +28,16 @@ export class ContactUsService {
         const query = {};
 
         const options = {
+            query,
             page,
             limit,
         };
 
-        return this.contactUsModel.paginate(query, options);
+        return this.contactUsModel.paginate(options);
     }
 
     findOne(id: Types.ObjectId) {
-        const contactRequest = this.contactUsModel.findById(id);
+        const contactRequest = this.contactUsModel.findById(new Types.ObjectId(id));
 
         if (!contactRequest) throw new NotFoundException(`Contact request not found`);
 
@@ -47,7 +49,7 @@ export class ContactUsService {
     }
 
     update(id: Types.ObjectId, body: ContactUsDto) {
-        const updatedContactUs = this.contactUsModel.findByIdAndUpdate(id, { ...body }, { new: true });
+        const updatedContactUs = this.contactUsModel.findByIdAndUpdate(new Types.ObjectId(id), { ...body }, { new: true });
 
         if (!updatedContactUs) throw new NotFoundException(`Contact request not found`);
 

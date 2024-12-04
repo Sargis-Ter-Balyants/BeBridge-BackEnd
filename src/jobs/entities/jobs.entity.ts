@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { mongoosePagination } from "mongoose-paginate-ts";
-
 import { JobCategory } from "src/job-category/entities/job-category.entity";
 
 @Schema({ collection: "jobs", timestamps: true })

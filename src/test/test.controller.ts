@@ -1,24 +1,23 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { Types } from 'mongoose';
-import { TestService } from './test.service';
-import { ParseObjectId } from "../utils/pipes/parseObjectId.pipe";
+import { Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Types } from "mongoose";
+import { TestService } from "./test.service";
 
-@Controller('test')
+@Controller("test")
 export class TestController {
-  constructor(private readonly testService: TestService) {}
+    constructor(private readonly testService: TestService) {}
 
-  @Get(':id')
-  findOne(@Param('id', ParseObjectId) id: Types.ObjectId) {
-    return this.testService.findOne(id);
-  }
+    @Get(":id")
+    findOne(@Param("id") id: string) {
+        return this.testService.findOne(new Types.ObjectId(id));
+    }
 
-  @Get('search')
-  search(@Query('tags') query: string[]) {
-    return this.testService.search(query);
-  }
+    @Get("search")
+    search(@Query("tags") query: string[]) {
+        return this.testService.search(query);
+    }
 
-  @Post('check')
-  check() {
-    return this.testService.check();
-  }
+    @Post("check")
+    check() {
+        return this.testService.check();
+    }
 }

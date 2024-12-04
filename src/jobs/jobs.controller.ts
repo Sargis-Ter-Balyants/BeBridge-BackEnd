@@ -6,9 +6,6 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
 import { Role } from "src/user/entities/user.entity";
 import { Roles } from "src/auth/role.decorator";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
-
 
 @UseGuards(AuthGuard, RoleGuard)
 @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
@@ -17,8 +14,8 @@ export class JobsController {
     constructor(private readonly jobsService: JobsService) {}
 
     @Get()
-    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
-        return this.jobsService.getAll(page, limit);
+    getAll(@Query("page") page: string, @Query("limit") limit: string) {
+        return this.jobsService.getAll(parseInt(page), parseInt(limit));
     }
 
     @UseGuards()
@@ -30,8 +27,8 @@ export class JobsController {
     @Get("search")
     search(
         @Query("search_term") searchTerm: string,
-        @Query("page", ParseNumber) page: number,
-        @Query("limit", ParseNumber) limit: number,
+        @Query("page") page: string,
+        @Query("limit") limit: string,
         @Query("category_id") categoryId: string,
         // @Query("type") type: string,
         // @Query("level") level: string,
@@ -40,19 +37,19 @@ export class JobsController {
         @Query("sort_type") sortType: string
     ) {
         return this.jobsService.search(
-            page || 1,
-            limit || 10,
+            parseInt(page),
+            parseInt(limit),
             searchTerm || "",
             categoryId || null,
             sortBy || "createdAt",
             sortType || "desc"
         );
-        // return this.jobsService.search(page, limit, searchTerm, categoryId, type, level, education, sortBy, sortType);
+        // return this.jobsService.search(parseInt(page), parseInt(limit), searchTerm, categoryId, type, level, education, sortBy, sortType);
     }
 
     @Get(":id")
-    findOne(@Param("id", ParseObjectId) id: Types.ObjectId) {
-        return this.jobsService.getOne(id);
+    findOne(@Param("id") id: string) {
+        return this.jobsService.getOne(new Types.ObjectId(id));
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
@@ -63,13 +60,13 @@ export class JobsController {
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Patch(":id")
-    update(@Param("id", ParseObjectId) id: Types.ObjectId, @Body() body: JobSDto) {
-        return this.jobsService.update(id, body);
+    update(@Param("id") id: string, @Body() body: JobSDto) {
+        return this.jobsService.update(new Types.ObjectId(id), body);
     }
 
     @Roles(Role.EMPLOYER, Role.MODERATOR)
     @Delete(":id")
-    delete(@Param("id", ParseObjectId) id: Types.ObjectId) {
-        return this.jobsService.delete(id);
+    delete(@Param("id") id: string) {
+        return this.jobsService.delete(new Types.ObjectId(id));
     }
 }

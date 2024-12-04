@@ -17,15 +17,16 @@ export class NotificationsService {
         const options = {
             page,
             limit,
+            query,
         };
 
-        return this.notificationsModel.paginate(query, options);
+        return this.notificationsModel.paginate(options);
     }
 
     async getOne(id: Types.ObjectId) {
-        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect id`);
+        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect id`);
 
-        const notification = await this.notificationsModel.findById(id);
+        const notification = await this.notificationsModel.findById(new Types.ObjectId(id));
         if (!notification) throw new NotFoundException(`Notification not found`);
 
         return notification;
@@ -36,16 +37,20 @@ export class NotificationsService {
     }
 
     async update(id: Types.ObjectId, body: NotificationsDTO) {
-        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
+        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect query`);
 
-        const updatedNotification = await this.notificationsModel.findByIdAndUpdate(id, { ...body }, { new: true });
+        const updatedNotification = await this.notificationsModel.findByIdAndUpdate(
+            new Types.ObjectId(id),
+            { ...body },
+            { new: true }
+        );
         if (!updatedNotification) throw new NotFoundException(`Notification not found`);
 
         return updatedNotification;
     }
 
     async delete(id: Types.ObjectId) {
-        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
+        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect query`);
 
         const notification = await this.notificationsModel.findByIdAndDelete({ _id: id });
         if (!notification) throw new NotFoundException(`Notification not found`);

@@ -2,26 +2,25 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } f
 import { Types } from "mongoose";
 import { NewsService } from "./news.service";
 import { NewsDTO } from "./dto/news.dto";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
+
 
 @Controller("news")
 export class NewsController {
     constructor(private readonly newsService: NewsService) {}
 
     @Get("")
-    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
-        return this.newsService.getAll(page, limit);
+    getAll(@Query("page") page: string, @Query("limit") limit: string) {
+        return this.newsService.getAll(parseInt(page), parseInt(limit));
     }
 
     @Get("search")
-    search(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
-        return this.newsService.search(page, limit);
+    search(@Query("page") page: string, @Query("limit") limit: string) {
+        return this.newsService.search(parseInt(page), parseInt(limit));
     }
 
     @Get(":id")
-    findOne(@Param("id", ParseObjectId) id: Types.ObjectId) {
-        return this.newsService.findOne(id);
+    findOne(@Param("id") id: string) {
+        return this.newsService.findOne(new Types.ObjectId(id));
     }
 
     @UseGuards()
@@ -31,12 +30,12 @@ export class NewsController {
     }
 
     @Patch(":id")
-    update(@Param("id", ParseObjectId) id: Types.ObjectId, @Body() body: NewsDTO) {
-        return this.newsService.update(id, body);
+    update(@Param("id") id: string, @Body() body: NewsDTO) {
+        return this.newsService.update(new Types.ObjectId(id), body);
     }
 
     @Delete(":id")
-    remove(@Param("id", ParseObjectId) id: Types.ObjectId) {
-        return this.newsService.delete(id);
+    remove(@Param("id") id: string) {
+        return this.newsService.delete(new Types.ObjectId(id));
     }
 }
