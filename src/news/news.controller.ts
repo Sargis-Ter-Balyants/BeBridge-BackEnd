@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } f
 import { Types } from "mongoose";
 import { NewsService } from "./news.service";
 import { NewsDTO } from "./dto/news.dto";
-import { ParseNumber } from "src/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
+import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @Controller("news")
 export class NewsController {

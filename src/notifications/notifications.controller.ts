@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestj
 import { NotificationsService } from "./notifications.service";
 import { NotificationsDTO } from "./dto/notifications.dto";
 import { Types } from "mongoose";
-import { ParseNumber } from "src/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
+import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @Controller("notifications")
 export class NotificationsController {
