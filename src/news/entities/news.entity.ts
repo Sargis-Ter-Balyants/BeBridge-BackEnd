@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import * as mongoosePaginate from "mongoose-paginate-v2";
+const mongoosePaginate = require("mongoose-paginate-v2");
+
 
 @Schema({ collection: "news", timestamps: true })
 export class NewsModel {

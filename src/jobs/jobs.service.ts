@@ -41,15 +41,6 @@ export class JobsService {
 
         const sort = { [sortBy]: sortType === "desc" ? -1 : 1 };
 
-        const options = {
-            page,
-            limit,
-            sort,
-            populate: {
-                path: "category",
-            },
-        };
-
         if (searchTerm.length) {
             query.searchTerm = {
                 $or: [
@@ -80,9 +71,17 @@ export class JobsService {
         //     query.education = education;
         // }
 
-        console.log(query, options);
+        const options = {
+            page,
+            query,
+            limit,
+            sort,
+            populate: {
+                path: "category",
+            },
+        };
 
-        return this.jobModel.paginate(query, options);
+        return this.jobModel.paginate(options);
     }
 
     async getOne(id: Types.ObjectId) {
