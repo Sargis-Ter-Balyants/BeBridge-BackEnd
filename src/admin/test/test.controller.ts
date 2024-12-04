@@ -20,7 +20,7 @@ import { Role } from '../../user/entities/user.entity';
 import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
 import { AuthGuard, RequestWithUser } from '../../auth/auth.guard';
-import { ParseObjectId } from 'src/utils/pipes/parseObjectId.pipe';
+import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
 import { multer } from '../../utils/multer';
 
 @Controller('admin/test')

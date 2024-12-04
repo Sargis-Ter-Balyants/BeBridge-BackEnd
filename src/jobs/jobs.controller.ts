@@ -6,8 +6,8 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
 import { Role } from "src/user/entities/user.entity";
 import { Roles } from "src/auth/role.decorator";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
+import { ParseNumber } from "src/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
 
 
 @UseGuards(AuthGuard, RoleGuard)

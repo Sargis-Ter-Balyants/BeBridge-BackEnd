@@ -21,7 +21,7 @@ import { ExperienceDto } from './dto/experience.dto';
 import { SkillDto } from './dto/skill.dto';
 import { UserService } from './user.service';
 import { AuthGuard, RequestWithUser } from '../auth/auth.guard';
-import { ParseObjectId } from '../utils/pipes/parseObjectId.pipe';
+import { ParseObjectId } from "../pipes/parseObjectId.pipe";
 import { multer } from '../utils/multer';
 
 @Controller('user')

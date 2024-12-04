@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestj
 import { ReportsService } from "./reports.service";
 import { ReportsDTO } from "./dto/reports.dto";
 import { Types } from "mongoose";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
+import { ParseNumber } from "src/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
 
 @Controller("reports")
 export class ReportsController {

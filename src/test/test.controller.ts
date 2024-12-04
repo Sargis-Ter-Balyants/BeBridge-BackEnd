@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { TestService } from './test.service';
-import { ParseObjectId } from '../utils/pipes/parseObjectId.pipe';
+import { ParseObjectId } from "../pipes/parseObjectId.pipe";
 
 @Controller('test')
 export class TestController {

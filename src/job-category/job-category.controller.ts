@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { Types } from "mongoose";
 import { JobCategoryDto } from "./dto/job-category.dto";
 import { JobCategoryService } from "./job-category.service";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
+import { ParseNumber } from "src/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/pipes/parseObjectId.pipe";
 
 @Controller("job-category")
 export class JobCategoryController {
