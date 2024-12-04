@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ParseIntPipe } from "@nestjs/common";
 import { Types } from "mongoose";
 import { NewsService } from "./news.service";
 import { NewsDTO } from "./dto/news.dto";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+
 import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @Controller("news")
@@ -10,12 +10,12 @@ export class NewsController {
     constructor(private readonly newsService: NewsService) {}
 
     @Get("")
-    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+    getAll(@Query("page", ParseIntPipe) page: number, @Query("limit", ParseIntPipe) limit: number) {
         return this.newsService.getAll(page, limit);
     }
 
     @Get("search")
-    search(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+    search(@Query("page", ParseIntPipe) page: number, @Query("limit", ParseIntPipe) limit: number) {
         return this.newsService.search(page, limit);
     }
 

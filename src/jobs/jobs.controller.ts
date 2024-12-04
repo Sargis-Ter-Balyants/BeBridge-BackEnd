@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { Types } from "mongoose";
 import { JobSDto } from "./dto/jobs.dto";
 import { JobsService } from "./jobs.service";
@@ -6,9 +6,8 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
 import { Role } from "src/user/entities/user.entity";
 import { Roles } from "src/auth/role.decorator";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
-import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
+import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @UseGuards(AuthGuard, RoleGuard)
 @Roles(Role.EMPLOYEE, Role.EMPLOYER, Role.MODERATOR)
@@ -17,7 +16,7 @@ export class JobsController {
     constructor(private readonly jobsService: JobsService) {}
 
     @Get()
-    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+    getAll(@Query("page", ParseIntPipe) page: number, @Query("limit", ParseIntPipe) limit: number) {
         return this.jobsService.getAll(page, limit);
     }
 
@@ -30,8 +29,8 @@ export class JobsController {
     @Get("search")
     search(
         @Query("search_term") searchTerm: string,
-        @Query("page", ParseNumber) page: number,
-        @Query("limit", ParseNumber) limit: number,
+        @Query("page", ParseIntPipe) page: number,
+        @Query("limit", ParseIntPipe) limit: number,
         @Query("category_id") categoryId: string,
         // @Query("type") type: string,
         // @Query("level") level: string,

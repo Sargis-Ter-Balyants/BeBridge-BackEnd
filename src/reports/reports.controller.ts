@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from "@nestjs/common";
 import { ReportsService } from "./reports.service";
 import { ReportsDTO } from "./dto/reports.dto";
 import { Types } from "mongoose";
-import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+
 import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @Controller("reports")
@@ -10,7 +10,7 @@ export class ReportsController {
     constructor(private readonly reportsService: ReportsService) {}
 
     @Get()
-    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+    getAll(@Query("page", ParseIntPipe) page: number, @Query("limit", ParseIntPipe) limit: number) {
         return this.reportsService.getAll(page, limit);
     }
 
