@@ -1,4 +1,4 @@
-import { Types, Schema as MongooseSchema } from "mongoose";
+import { Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoosePaginate from "mongoose-paginate-v2";
 
@@ -19,4 +19,4 @@ export class ReportsModel {
 
 export const ReportsSchema = SchemaFactory.createForClass(ReportsModel);
 
-(ReportsSchema as MongooseSchema<any>).plugin(mongoosePaginate);
+ReportsSchema.plugin(mongoosePaginate as any);
