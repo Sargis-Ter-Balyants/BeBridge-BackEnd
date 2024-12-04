@@ -159,31 +159,27 @@ export class UserService {
   }
 
   async bookmark(payload: JwtPayload, id: Types.ObjectId) {
-    const job = await this.jobModel.findById(new Types.ObjectId(id));
-    if (!job) throw new BadRequestException("Job not found");
+    const job = await this.jobModel.findById(id);
+    if (!job) throw new BadRequestException('Job not found');
 
-    const user = await this.userModel
-        .findByIdAndUpdate(
-            payload.id,
-            [
-                {
-                    $set: {
-                        bookmark: {
-                            $cond: {
-                                if: { $in: [new Types.ObjectId(new Types.ObjectId(id)), "$bookmark"] },
-                                then: { $setDifference: ["$bookmark", [new Types.ObjectId(new Types.ObjectId(id))]] },
-                                else: { $concatArrays: ["$bookmark", [new Types.ObjectId(new Types.ObjectId(id))]] },
-                            },
-                        },
-                    },
-                },
-            ],
-            { new: true }
-        )
-        .populate({
-            path: "bookmark",
-            model: "Jobs",
-        });
+    const user = await this.userModel.findByIdAndUpdate(
+      payload.id,
+      [ {
+        $set: {
+          bookmark: {
+            $cond: {
+              if: { $in: [ new Types.ObjectId(id), '$bookmark' ] },
+              then: { $setDifference: [ '$bookmark', [ new Types.ObjectId(id) ] ] },
+              else: { $concatArrays: [ '$bookmark', [ new Types.ObjectId(id) ] ] }
+            }
+          }
+        }
+      } ],
+      { new: true }
+    ).populate({
+      path: 'bookmark',
+      model: 'Jobs'
+    });
     if (!user) throw new UnauthorizedException('User not found');
 
     return user.bookmark;

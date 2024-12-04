@@ -17,10 +17,9 @@ export class NewsService {
         const options = {
             page,
             limit,
-            query
         };
 
-        return this.newsModel.paginate(options);
+        return this.newsModel.paginate(query, options);
     }
 
     // This is going to be different based on our needs
@@ -30,14 +29,13 @@ export class NewsService {
         const options = {
             page,
             limit,
-            query
         };
 
-        return this.newsModel.paginate(options);
+        return this.newsModel.paginate(query, options);
     }
 
     findOne(id: Types.ObjectId) {
-        const news = this.newsModel.findById(new Types.ObjectId(id));
+        const news = this.newsModel.findById(id);
 
         if (!news) throw new NotFoundException(`News not found`);
 
@@ -49,7 +47,7 @@ export class NewsService {
     }
 
     update(id: Types.ObjectId, body: NewsDTO) {
-        const updatedNews = this.newsModel.findByIdAndUpdate(new Types.ObjectId(id), { ...body }, { new: true });
+        const updatedNews = this.newsModel.findByIdAndUpdate(id, { ...body }, { new: true });
 
         if (!updatedNews) throw new NotFoundException(`News not found`);
 

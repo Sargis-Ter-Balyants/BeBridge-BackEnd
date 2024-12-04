@@ -6,7 +6,8 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { RoleGuard } from "src/auth/role.guard";
 import { Roles } from "src/auth/role.decorator";
 import { Role } from "src/user/entities/user.entity";
-
+import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @UseGuards(AuthGuard, RoleGuard)
 @Roles(Role.MODERATOR)
@@ -15,18 +16,18 @@ export class ContactUsController {
     constructor(private readonly contactUsService: ContactUsService) {}
 
     @Get("")
-    getAll(@Query("page") page: string, @Query("limit") limit: string) {
-        return this.contactUsService.getAll(parseInt(page), parseInt(limit));
+    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+        return this.contactUsService.getAll(page, limit);
     }
 
     @Get("search")
-    search(@Query("page") page: string, @Query("limit") limit: string) {
-        return this.contactUsService.search(parseInt(page), parseInt(limit));
+    search(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+        return this.contactUsService.search(page, limit);
     }
 
     @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.contactUsService.findOne(new Types.ObjectId(id));
+    findOne(@Param("id", ParseObjectId) id: Types.ObjectId) {
+        return this.contactUsService.findOne(id);
     }
 
     @UseGuards()
@@ -36,12 +37,12 @@ export class ContactUsController {
     }
 
     @Patch(":id")
-    update(@Param("id") id: string, @Body() body: ContactUsDto) {
-        return this.contactUsService.update(new Types.ObjectId(id), body);
+    update(@Param("id", ParseObjectId) id: Types.ObjectId, @Body() body: ContactUsDto) {
+        return this.contactUsService.update(id, body);
     }
 
     @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.contactUsService.delete(new Types.ObjectId(id));
+    remove(@Param("id", ParseObjectId) id: Types.ObjectId) {
+        return this.contactUsService.delete(id);
     }
 }

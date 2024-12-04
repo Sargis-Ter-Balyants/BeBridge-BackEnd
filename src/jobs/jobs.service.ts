@@ -17,10 +17,9 @@ export class JobsService {
         const options = {
             page,
             limit,
-            query
         };
 
-        return this.jobModel.paginate(options);
+        return this.jobModel.paginate(query, options);
     }
 
     async getAllPublic() {
@@ -41,15 +40,6 @@ export class JobsService {
         const query: any = {};
 
         const sort = { [sortBy]: sortType === "desc" ? -1 : 1 };
-
-        const options = {
-            page,
-            limit,
-            sort,
-            populate: {
-                path: "category",
-            },
-        };
 
         if (searchTerm.length) {
             query.searchTerm = {
@@ -81,15 +71,23 @@ export class JobsService {
         //     query.education = education;
         // }
 
-        console.log(query, options);
+        const options = {
+            page,
+            query,
+            limit,
+            sort,
+            populate: {
+                path: "category",
+            },
+        };
 
         return this.jobModel.paginate(options);
     }
 
     async getOne(id: Types.ObjectId) {
-        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect query`);
+        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
-        const job = await this.jobModel.findById(new Types.ObjectId(id));
+        const job = await this.jobModel.findById(id);
         if (!job) throw new NotFoundException(`Job not found`);
 
         return job;
@@ -101,16 +99,16 @@ export class JobsService {
     }
 
     async update(id: Types.ObjectId, job: JobSDto) {
-        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect query`);
+        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
-        const updateJob = await this.jobModel.findByIdAndUpdate(new Types.ObjectId(id), { ...job }, { new: true });
+        const updateJob = await this.jobModel.findByIdAndUpdate(id, { ...job }, { new: true });
         if (!updateJob) throw new NotFoundException(`Job category not found`);
 
         return updateJob;
     }
 
     async delete(id: Types.ObjectId) {
-        if (!Types.ObjectId.isValid(new Types.ObjectId(id))) throw new BadRequestException(`Incorrect query`);
+        if (!Types.ObjectId.isValid(id)) throw new BadRequestException(`Incorrect query`);
 
         const job = await this.jobModel.findByIdAndDelete({ _id: id });
         if (!job) throw new NotFoundException(`Job category not found`);

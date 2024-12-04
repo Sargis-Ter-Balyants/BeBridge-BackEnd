@@ -2,20 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestj
 import { ReportsService } from "./reports.service";
 import { ReportsDTO } from "./dto/reports.dto";
 import { Types } from "mongoose";
-
+import { ParseNumber } from "src/utils/pipes/parseNumber.pipe";
+import { ParseObjectId } from "src/utils/pipes/parseObjectId.pipe";
 
 @Controller("reports")
 export class ReportsController {
     constructor(private readonly reportsService: ReportsService) {}
 
     @Get()
-    getAll(@Query("page") page: string, @Query("limit") limit: string) {
-        return this.reportsService.getAll(parseInt(page), parseInt(limit));
+    getAll(@Query("page", ParseNumber) page: number, @Query("limit", ParseNumber) limit: number) {
+        return this.reportsService.getAll(page, limit);
     }
 
     @Get(":id")
-    getOne(@Param("id") id: string) {
-        return this.reportsService.getOne(new Types.ObjectId(id));
+    getOne(@Param("id", ParseObjectId) id: Types.ObjectId) {
+        return this.reportsService.getOne(id);
     }
 
     @Post()
@@ -24,12 +25,12 @@ export class ReportsController {
     }
 
     @Patch(":id")
-    update(@Param("id") id: string, @Body() body: ReportsDTO) {
-        return this.reportsService.update(new Types.ObjectId(id), body);
+    update(@Param("id", ParseObjectId) id: Types.ObjectId, @Body() body: ReportsDTO) {
+        return this.reportsService.update(id, body);
     }
 
     @Delete(":id")
-    delete(@Param("id") id: string) {
-        return this.reportsService.delete(new Types.ObjectId(id));
+    delete(@Param("id", ParseObjectId) id: Types.ObjectId) {
+        return this.reportsService.delete(id);
     }
 }
