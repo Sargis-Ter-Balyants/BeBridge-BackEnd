@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-const mongoosePaginate = require("mongoose-paginate-v2");
-
+import { mongoosePagination } from "mongoose-paginate-ts";
 
 @Schema({ collection: "job-categories", timestamps: true })
 export class JobCategory {
@@ -17,4 +16,4 @@ export class JobCategory {
 
 export const JobCategorySchema = SchemaFactory.createForClass(JobCategory);
 
-JobCategorySchema.plugin(mongoosePaginate as any);
+JobCategorySchema.plugin(mongoosePagination);
